@@ -1,0 +1,20 @@
+﻿@model DataAccessLayer.Models.Team
+@{
+    ViewData["Title"] = "About";
+}
+@using (Html.BeginForm("CreatenewTeam", "Home", FormMethod.Post))
+{
+    <div class="col">
+        <label>Add new Team</label>
+        @Html.TextBoxFor(m => m.TeamName, new {@class="form-control"})
+        @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+    </div>
+    <div class="col">
+        <h2>Minimum count workers</h2>
+        @Html.TextBoxFor(m => m.MinNumberWorkers, new { @class  = "form-control", @type = "number" })
+        @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+    </div>
+    <div style="margin:10px 0px " class=" col">
+         <button type="submit" class=" btn btn-primary btn-lg btn-block">Add</button>
+    </div>
+}

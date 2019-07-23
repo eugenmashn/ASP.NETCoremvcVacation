@@ -7,7 +7,8 @@ namespace DataAccessLayer.Models
     public class WorkerContext:DbContext
     {
         public DbSet<Vacation> Vacations { get; set; }
-        public DbSet<Person> Workers { get; set; }
+       
+        public DbSet<Person> People { get; set; }
         public DbSet<Weekend> HolyDays { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<GlobalSetting> GlobalSettings { get; set; }

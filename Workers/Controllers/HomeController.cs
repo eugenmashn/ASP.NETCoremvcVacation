@@ -15,21 +15,48 @@ namespace Workers.Controllers
         public IEFGenericRepository<Team> Teamrepository { get; set; }
 
         public HomeController(IEFGenericRepository<Team> teamrepository)
-       {
+        {
             Teamrepository = teamrepository;
         }
         public IActionResult Index()
         {
-            return View();
+           List<Team> Teams= Teamrepository.Get().ToList();
+            return View(Teams);
         }
 
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
+            return View();
+        }
+        /*[Route("/{TeamName}")]
+        public IActionResult TeamIndex()
+        {
+            ViewData["Message"] = "Your Team page.";
+
+            return View();
+        }*/
+       
+   
+           [Route("/AddnewTeam")]
+        public IActionResult AddnewTeam()
+        {
+            ViewData["Message"] = "Add Team  page.";
 
             return View();
         }
+       [Route("/CreatenewTeam")]
+       [HttpPost]
+        public IActionResult CreatenewTeam(Team newTeam)
+        {
+            Team team = new Team();
+            team.MinNumberWorkers = newTeam.MinNumberWorkers;
+            team.TeamName = newTeam.TeamName;
+            team.Id = Guid.NewGuid();
+            Teamrepository.Create(newTeam);
 
+            return Redirect("~/Home");
+        }
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";

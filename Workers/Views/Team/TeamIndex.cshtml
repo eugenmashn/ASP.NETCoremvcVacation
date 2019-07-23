@@ -1,0 +1,13 @@
+﻿@model IEnumerable<DataAccessLayer.Models.Person>
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+    <div class="row">
+        <div class="col-md-3">
+            <h2>@ViewData["TeamName"]</h2>
+            @foreach (var person in Model)
+            {
+                <li>@person.Name @person.LastName </li>
+            }
+        </div>
+    </div>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataAccessLayer.Models
+namespace Workers.ModelsView
 {
     
     public class Person
