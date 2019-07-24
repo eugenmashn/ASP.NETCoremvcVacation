@@ -12,19 +12,30 @@ namespace Workers.Controllers
 {
     public class TeamController : Controller
     {
-        public IEFGenericRepository<Person> TeamsPersonrepository { get; set; }
+        public IEFGenericRepository<Team> TeamRepository { get; set;}
 
-        public TeamController(IEFGenericRepository<Person> teamspersonrepository)
+        public IEFGenericRepository<Person> Personrepository { get; set; }
+
+        public TeamController(IEFGenericRepository<Person> personrepository,IEFGenericRepository<Team> teamRepository)
         {
-            TeamsPersonrepository = teamspersonrepository;
+            Personrepository = personrepository;
+            TeamRepository = teamRepository;
+
         }
         [Route("/{TeamName}/{TeamId}")]
         public IActionResult TeamIndex(Guid TeamId,string TeamName)
         {
             ViewData["Message"] = "Your Team page.";
             ViewData["TeamName"] = TeamName;
-            return View(TeamsPersonrepository.Get(person=>person.TeamId== TeamId));
+            ViewBag.TeamId = TeamId;
+            return View(Personrepository.Get(person=>person.TeamId== TeamId));
         }
-
+        [Route("{TeamName}")]
+        public IActionResult TeamDelete(Guid TeamId)
+        {
+            Team team = TeamRepository.FindById(x=>x.Id==TeamId);
+            TeamRepository.Remove(team);
+             return Redirect("~/");
+        }
     }
 }

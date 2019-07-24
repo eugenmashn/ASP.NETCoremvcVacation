@@ -21,6 +21,7 @@ namespace Workers.Controllers
         public IActionResult Index()
         {
            List<Team> Teams= Teamrepository.Get().ToList();
+
             return View(Teams);
         }
 
@@ -55,7 +56,7 @@ namespace Workers.Controllers
             team.Id = Guid.NewGuid();
             Teamrepository.Create(newTeam);
 
-            return Redirect("~/Home");
+            return Redirect("~/");
         }
         public IActionResult Contact()
         {
