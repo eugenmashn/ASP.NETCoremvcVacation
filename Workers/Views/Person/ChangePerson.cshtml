@@ -1,0 +1,29 @@
+﻿@model DataAccessLayer.Models.Person
+@{
+    ViewData["Title"] = "ChangePerson";
+}
+
+<h2>ChangePerson</h2>
+
+@using (Html.BeginForm("ChangePersonPost", "Person", FormMethod.Post))
+{
+    <div class="col">
+        <label>Name</label>
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @Value = (Model == null) ? "" : Model.Name })
+        @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+    </div>
+    <div class="col">
+        <label>LastName</label>
+        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @Value = (Model == null) ? "" : Model.LastName })
+        @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+    </div>
+    <div class="col">
+        <h2>Days vacation</h2>
+        @Html.TextBoxFor(m => m.Days, new { @class = "form-control", @type = "number" , @Value = (Model == null) ? "" : Model.Days.ToString() })
+        @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+    </div>
+    <div style="margin:10px 0px " class=" col">
+        <button type="submit" class=" btn btn-primary btn-lg btn-block">Save Change</button>
+    </div>
+}
+

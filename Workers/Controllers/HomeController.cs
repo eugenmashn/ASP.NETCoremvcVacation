@@ -13,11 +13,13 @@ namespace Workers.Controllers
     public class HomeController : Controller
     {
         public IEFGenericRepository<Team> Teamrepository { get; set; }
-
-        public HomeController(IEFGenericRepository<Team> teamrepository)
+        public IEFGenericRepository<Person> PersonRepository { get; set; }
+        public HomeController(IEFGenericRepository<Team> teamrepository,IEFGenericRepository<Person>personrepository)
         {
             Teamrepository = teamrepository;
+            PersonRepository = personrepository;
         }
+
         public IActionResult Index()
         {
            List<Team> Teams= Teamrepository.Get().ToList();
@@ -25,10 +27,12 @@ namespace Workers.Controllers
             return View(Teams);
         }
 
-        public IActionResult About()
+        [Route("/Workers")]
+        public IActionResult Workers()
         {
+
             ViewData["Message"] = "Your application description page.";
-            return View();
+            return View(PersonRepository.Get());
         }
         /*[Route("/{TeamName}")]
         public IActionResult TeamIndex()
@@ -55,16 +59,14 @@ namespace Workers.Controllers
             team.TeamName = newTeam.TeamName;
             team.Id = Guid.NewGuid();
             Teamrepository.Create(newTeam);
-
             return Redirect("~/");
         }
+        [Route("/Contact")]
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
-
             return View();
         }
-
         public IActionResult Privacy()
         {
             return View();

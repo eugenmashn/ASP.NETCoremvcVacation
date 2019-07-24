@@ -10,6 +10,6 @@ namespace DataAccessLayer.Models
         public string TeamName { get; set; }
         //  public int Year { get; set; }
         public int MinNumberWorkers { get; set; }
-        public virtual List<Person> Workers { get; set; }
+        public  List<Person> Workers { get; set; }
     }
 }

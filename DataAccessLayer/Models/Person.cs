@@ -17,7 +17,7 @@ namespace DataAccessLayer.Models
 
         /*    [DataMember]
             [ForeignKey("TeamId")]*/
-        public virtual Team Team { get; set; }
+        public  Team Team { get; set; }
         public List<Vacation> HolyDays { get; set; } = new List<Vacation>();
     }
 }

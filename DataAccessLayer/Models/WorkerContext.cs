@@ -24,6 +24,9 @@ namespace DataAccessLayer.Models
                  .HasOne(s => s.Team)
                  .WithMany(g => g.Workers)
                  .HasForeignKey(fk => fk.TeamId);
+            modelBuilder.Entity<Team>()
+                .HasMany(c => c.Workers)
+                .WithOne(e => e.Team);
             // .WillCascadeOnDelete(false);
             //modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
         }

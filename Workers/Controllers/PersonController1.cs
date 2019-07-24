@@ -12,6 +12,7 @@ namespace Workers.Controllers
 {
     public class PersonController : Controller
     {
+
         public IEFGenericRepository<Team> TeamRepository { get; set; }
 
         public IEFGenericRepository<Person> Personrepository { get; set; }
@@ -32,7 +33,8 @@ namespace Workers.Controllers
         }
         [HttpPost]
         [Route("{TeamId}")]
-        public IActionResult CreatenewPerson(Person person,Guid TeamId) {
+        public IActionResult CreatenewPerson(Person person,Guid TeamId)
+        {
             Person newPerson = new Person();
             newPerson.Id = Guid.NewGuid();
             newPerson.Year = DateTime.Now.Year;
@@ -44,7 +46,24 @@ namespace Workers.Controllers
             Personrepository.Create(newPerson);
             return Redirect("~/");
         }
+        [HttpGet]
+        [Route("ChangePerson/{personId}")]
+        public IActionResult ChangePerson(Guid personId)
+        {
+            Person person = Personrepository.FindById(personId);
 
-
+            return View(person);
+        }
+        [HttpPost]
+        [Route("ChangePerson/{personId}")]
+        public IActionResult ChangePersonPost(Person person,Guid personId)
+        {
+            Person Updateperson = Personrepository.FindById(personId);
+            Updateperson.Name = person.Name;
+            Updateperson.LastName = person.LastName;
+            Updateperson.Days = person.Days;
+            Personrepository.Update(Updateperson);
+            return Redirect("~/Workers");
+        }
     }
 }
