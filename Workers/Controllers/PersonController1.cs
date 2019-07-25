@@ -35,14 +35,15 @@ namespace Workers.Controllers
         [Route("{TeamId}")]
         public IActionResult CreatenewPerson(Person person,Guid TeamId)
         {
+            Team team = TeamRepository.FindById(TeamId);
             Person newPerson = new Person();
             newPerson.Id = Guid.NewGuid();
             newPerson.Year = DateTime.Now.Year;
             newPerson.Name = person.Name;
             newPerson.LastName = person.LastName;
-            newPerson.TeamId = TeamId;
+           // newPerson.TeamId = TeamId;
             newPerson.Days = person.Days;
-
+            newPerson.Team = team;
             Personrepository.Create(newPerson);
             return Redirect("~/");
         }
@@ -50,20 +51,32 @@ namespace Workers.Controllers
         [Route("ChangePerson/{personId}")]
         public IActionResult ChangePerson(Guid personId)
         {
-            Person person = Personrepository.FindById(personId);
-
+            Person person = Personrepository.IncludeGet(p => p.Team).FirstOrDefault(p => p.Id == personId);
+            ViewBag.Teams = TeamRepository.Get().ToList();
             return View(person);
         }
         [HttpPost]
         [Route("ChangePerson/{personId}")]
         public IActionResult ChangePersonPost(Person person,Guid personId)
+            
         {
-            Person Updateperson = Personrepository.FindById(personId);
+            Team team = TeamRepository.FindById((Guid)person.TeamId);
+            Person Updateperson = Personrepository.IncludeGet(p=>p.Team).FirstOrDefault(p=>p.Id==personId);
             Updateperson.Name = person.Name;
             Updateperson.LastName = person.LastName;
             Updateperson.Days = person.Days;
+            Updateperson.Team = team;
             Personrepository.Update(Updateperson);
             return Redirect("~/Workers");
         }
+        
+              [Route("DeletePerson/{personId}")]
+        public IActionResult DeletePerson(Guid personId)
+        {
+            Person person = Personrepository.FindById(personId);
+            Personrepository.Remove(person);
+            return Redirect("~/Workers");
+        }
+      
     }
 }

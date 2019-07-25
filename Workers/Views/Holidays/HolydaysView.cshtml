@@ -1,0 +1,26 @@
+﻿@model IEnumerable<DataAccessLayer.Models.Weekend>
+@{
+    ViewData["Title"] = "HolydaysView";
+}
+
+<h2>HolydaysView</h2>
+@*<h3>@ViewData["Message"]</h3>*@
+<table class="table table-dark">
+    <thead>
+    <th scope="col">Start day </th>
+    <th scope="col">Finish date</th>
+    </thead>
+    <tbody>
+
+        @foreach (var holyday in Model)
+        {
+
+            <tr>
+                <th scope="row">@holyday.startDate </th>
+                <th scope="row">@holyday.EndDate </th>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-area="" asp-controller="Holidays" asp-action="CreateHolydays" ><button type="button" class="btn btn-primary">Add day</button></a>
+

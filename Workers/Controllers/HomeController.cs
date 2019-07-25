@@ -30,9 +30,11 @@ namespace Workers.Controllers
         [Route("/Workers")]
         public IActionResult Workers()
         {
-
+        
             ViewData["Message"] = "Your application description page.";
-            return View(PersonRepository.Get());
+            ViewBag.Teams= Teamrepository.Get().ToList();
+            
+            return View(PersonRepository.IncludeGet(p=>p.Team));
         }
         /*[Route("/{TeamName}")]
         public IActionResult TeamIndex()

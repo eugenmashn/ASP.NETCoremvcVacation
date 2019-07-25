@@ -2,6 +2,17 @@
 @{
     ViewData["Title"] = "ChangePerson";
 }
+@{
+    List<SelectListItem> listItems= new List<SelectListItem>();
+    foreach(var Team in ViewBag.Teams) {
+        listItems.Add(new SelectListItem
+        {
+            Text=Team.TeamName,
+            Value=Team.Id.ToString()
+        }
+        ) ;
+    }
+ }
 
 <h2>ChangePerson</h2>
 
@@ -19,8 +30,13 @@
     </div>
     <div class="col">
         <h2>Days vacation</h2>
-        @Html.TextBoxFor(m => m.Days, new { @class = "form-control", @type = "number" , @Value = (Model == null) ? "" : Model.Days.ToString() })
+        @Html.TextBoxFor(m => m.Days, new { @class = "form-control", @type = "number", @Value = (Model == null) ? "" : Model.Days.ToString() })
         @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+    </div>
+    <div class="col ">
+        <label>Team</label>
+        @Html.DropDownListFor(m=>m.TeamId, listItems, "-- Select Status --", new { @class = "form-control",@Value=new SelectListItem{Text=Model.Team.TeamName,Value=Model.Team.Id.ToString() }
+        }) 
     </div>
     <div style="margin:10px 0px " class=" col">
         <button type="submit" class=" btn btn-primary btn-lg btn-block">Save Change</button>

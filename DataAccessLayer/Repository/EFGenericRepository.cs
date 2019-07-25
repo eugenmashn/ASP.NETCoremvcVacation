@@ -4,6 +4,8 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using DataAccessLayer.Models;
+using System.Linq.Expressions;
+
 namespace DataAccessLayer.Repository
 {
   
@@ -67,7 +69,18 @@ namespace DataAccessLayer.Repository
 
                 }
             }
-            public int Count(Func<TEntity, bool> predicate)
+        public IEnumerable<TEntity> IncludeGet( Expression<Func<TEntity, object>> includes)  
+        {
+         
+
+            IEnumerable<TEntity> query = null;
+           
+                query = _dbSet.Include(includes);
+            
+
+            return query ;
+        }
+        public int Count(Func<TEntity, bool> predicate)
             {
                 return _dbSet.Count(predicate);
             }

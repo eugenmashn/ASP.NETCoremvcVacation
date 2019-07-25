@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DataAccessLayer.Repository
@@ -18,5 +19,6 @@ namespace DataAccessLayer.Repository
         IEnumerable<TEntity> GetSort(Func<TEntity, string> predicate);
         void Update(TEntity item);
 
+        IEnumerable<TEntity> IncludeGet(Expression<Func<TEntity, object>> includes);
     }
 }

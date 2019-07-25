@@ -9,6 +9,7 @@
         <th scope="col">Name </th>
         <th scope="col">Surname </th>
         <th scope="col">Days </th>
+        <th scope="col">Team </th>
         <th scope="col"></th>
         <th scope="col"></th>
     </thead>
@@ -18,10 +19,10 @@
             {
           
             <tr>
-               
                     <th scope="row">@person.Name </th>
                     <th scope="row">@person.LastName </th>
                     <th scope="row">@person.Days </th>
+                    <th scope="row">@person.Team.TeamName </th>
                     <th scope="row"><a asp-area="Person" asp-controller="Person" asp-action="ChangePerson" asp-route-personId="@person.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Change</button></a></th>
                     <th scope="row"><a asp-area="Person" asp-controller="Person" asp-action="DeletePerson" asp-route-personId="@person.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
             
