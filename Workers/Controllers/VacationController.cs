@@ -50,8 +50,21 @@ namespace Workers.Controllers
             NewVacation.SecontDate = DateTime.ParseExact(vacation.EndDay, "M/d/yyyy", CultureInfo.InvariantCulture);
             NewVacation.Days = countVacation.CountDaysVacation(NewVacation.FirstDate, NewVacation.SecontDate);
             NewVacation.People = person;
+            if (person.Days< NewVacation.Days)
+                return Redirect("/Workers"); ;
+            person.Days -= NewVacation.Days;
             Vacationrepository.Create(NewVacation);
-            return Redirect("/");
+            return Redirect("/Workers");
+        }
+        [Route("/Delete/{vacationID}/{personId}")]
+        public IActionResult DeleteVacation(Guid vacationID,Guid personId)
+        {
+            Vacation vacation = Vacationrepository.FindById(vacationID);
+            Person person = Personrepository.FindById(personId);
+            person.Days += vacation.Days;
+            Vacationrepository.Remove(vacation);
+            Personrepository.Update(person);
+            return Redirect("/Workers");
         }
     }
 }

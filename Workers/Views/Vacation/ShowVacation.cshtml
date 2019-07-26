@@ -24,7 +24,7 @@
                     <th scope="row">@vacation.FirstDate </th>
                     <th scope="row">@vacation.SecontDate </th>
                     <th scope="row">@vacation.Days </th>
-                    <th scope="row"><a asp-area="" asp-controller="" asp-action="" asp-route-personId="@vacation.People.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
+                    <th scope="row"><a asp-area="" asp-controller="Vacation" asp-action="DeleteVacation" asp-route-vacationID="@vacation.Id" asp-route-personId="@vacation.People.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
                 </tr>
             }
         </tbody>
