@@ -1,0 +1,35 @@
+﻿@model IEnumerable<DataAccessLayer.Models.Vacation>
+@{
+    ViewData["Title"] = "ShowVacation";
+}
+
+<h2>ShowVacation</h2>
+<div class="row">
+    <table class="table table-dark">
+        <thead>
+        <th scope="col">Start Date </th>
+        <th scope="col">Finish Date </th>
+        <th scope="col">Days </th>
+        <th scope="col"></th>
+
+
+
+        </thead>
+        <tbody>
+
+            @foreach (var vacation in Model)
+            {
+
+                <tr>
+                    <th scope="row">@vacation.FirstDate </th>
+                    <th scope="row">@vacation.SecontDate </th>
+                    <th scope="row">@vacation.Days </th>
+                    <th scope="row"><a asp-area="" asp-controller="" asp-action="" asp-route-personId="@vacation.People.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <a asp-area="" asp-controller="Vacation" asp-action="AddnewVacation" asp-route-personId="@ViewBag.PersonId"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Add new vacation</button></a>
+</div>

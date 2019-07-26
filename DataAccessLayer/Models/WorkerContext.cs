@@ -18,6 +18,11 @@ namespace DataAccessLayer.Models
         {
             Database.EnsureCreated();
         }
+         
+        public WorkerContext()
+            :base()
+        {
+        }
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    modelBuilder.Entity<Person>()

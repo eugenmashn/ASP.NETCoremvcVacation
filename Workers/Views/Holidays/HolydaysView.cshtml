@@ -9,16 +9,18 @@
     <thead>
     <th scope="col">Start day </th>
     <th scope="col">Finish date</th>
+    <th scope="col"></th>
     </thead>
     <tbody>
 
         @foreach (var holyday in Model)
         {
 
-            <tr>
-                <th scope="row">@holyday.startDate </th>
-                <th scope="row">@holyday.EndDate </th>
-            </tr>
+        <tr>
+            <th scope="row">@holyday.startDate </th>
+            <th scope="row">@holyday.EndDate </th>
+            <th scope="row"><a asp-area="" asp-controller="Holidays" asp-action="DeleteHolyDay" asp-route-holidaysId="@holyday.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
+        </tr>
         }
     </tbody>
 </table>

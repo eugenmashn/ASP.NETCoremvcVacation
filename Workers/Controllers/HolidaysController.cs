@@ -53,5 +53,12 @@ namespace Workers.Controllers
             Weekendrepository.Create(weekend);
             return Redirect("/HolydaysView");
         }
+        [Route("/DeleteHolyDay/{holidaysId}")]
+        public IActionResult DeleteHolyDay(Guid holidaysId)
+        {
+            Weekend weekend = Weekendrepository.FindById(holidaysId);
+            Weekendrepository.Remove(weekend);
+            return Redirect("/HolydaysView");
+        }
     }
 }
