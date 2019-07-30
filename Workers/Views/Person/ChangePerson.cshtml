@@ -30,12 +30,12 @@
     </div>
     <div class="col">
         <h2>Days vacation</h2>
-        @Html.TextBoxFor(m => m.Days, new { @class = "form-control", @type = "number", @Value = (Model == null) ? "" : Model.Days.ToString() })
+        @Html.TextBoxFor(m => m.Days, new { @class = "form-control", @type = "number", @Value = (Model == null) ? "" : Model.Days.ToString() ,@max=18,@min=0 })
         @*<input type="number" class="form-control" name="MinNumberWorkers">*@
     </div>
     <div class="col ">
         <label>Team</label>
-        @Html.DropDownListFor(m=>m.TeamId, listItems, "-- Select Status --", new { @class = "form-control",@Value=new SelectListItem{Text=Model.Team.TeamName,Value=Model.Team.Id.ToString() }
+        @Html.DropDownListFor(m=>m.TeamId, listItems, "-- Select Status --", new { @class = "form-control",@Value=new SelectListItem{Text=(Model.Team==null)? "":Model.Team.TeamName,Value=(Model.Team==null) ? Guid.NewGuid().ToString()  :Model.Team.Id.ToString()}
         }) 
     </div>
     <div style="margin:10px 0px " class=" col">

@@ -10,6 +10,7 @@ using Workers.Models;
 
 namespace Workers.Controllers
 {
+
     public class HomeController : Controller
     {
         public IEFGenericRepository<Team> Teamrepository { get; set; }
@@ -19,15 +20,15 @@ namespace Workers.Controllers
             Teamrepository = teamrepository;
             PersonRepository = personrepository;
         }
-
+       
         public IActionResult Index()
         {
            List<Team> Teams= Teamrepository.Get().ToList();
 
             return View(Teams);
         }
-
-        [Route("/Workers")]
+        [Route("[controller]/[action]")]
+       /* [Route("/Workers")]*/
         public IActionResult Workers()
         {
         
@@ -43,41 +44,49 @@ namespace Workers.Controllers
 
             return View();
         }*/
-       
-   
-           [Route("/AddnewTeam")]
+
+        [Route("[controller]/[action]")]
+    /*    [Route("/AddnewTeam")]*/
         public IActionResult AddnewTeam()
         {
             ViewData["Message"] = "Add Team  page.";
 
             return View();
         }
-       [Route("/CreatenewTeam")]
-       [HttpPost]
+        /* [Route("/CreatenewTeam")]*/
+        [Route("[controller]/[action]")]
+        [HttpPost]
         public IActionResult CreatenewTeam(Team newTeam)
         {
             Team team = new Team();
             team.MinNumberWorkers = newTeam.MinNumberWorkers;
             team.TeamName = newTeam.TeamName;
             team.Id = Guid.NewGuid();
+            if(team.MinNumberWorkers>20|| team.MinNumberWorkers<0)
+                return Redirect("~/CreatenewTeam");
             Teamrepository.Create(newTeam);
+
             return Redirect("~/");
         }
-        [Route("/Contact")]
+        [Route("[controller]/[action]")]
+        /* [Route("/Contact")]*/
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
             return View();
         }
+        [Route("[controller]/[action]")]
         public IActionResult Privacy()
         {
             return View();
         }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
     }
 }

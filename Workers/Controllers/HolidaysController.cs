@@ -10,6 +10,7 @@ using System.Globalization;
 
 namespace Workers.Controllers
 {
+    [Route("[controller]/[action]")]
     public class HolidaysController : Controller
     {
         public IEFGenericRepository<Team> TeamRepository { get; set; }
@@ -23,13 +24,13 @@ namespace Workers.Controllers
             TeamRepository = teamRepository;
             Weekendrepository = weekendpository;
         }
-        [Route("/HolydaysView")]
+       /* [Route("/HolydaysView")]*/
         public IActionResult HolydaysView()
         {
            List<Weekend> weekend = Weekendrepository.Get().ToList();
            return View(weekend);
         }
-        [Route("/CreateHolydays")]
+       /* [Route("/CreateHolydays")]*/
         public IActionResult CreateHolydays() {
 
             //  return Redirect("/HolydaysView");
@@ -43,7 +44,7 @@ namespace Workers.Controllers
                 return View();
             }
         }
-        [Route("/CreateNewHolydays")]
+   /*     [Route("/CreateNewHolydays")]*/
         public IActionResult CreateNewHolydays(Holydays newweekend)
         {
             Weekend weekend = new Weekend();
@@ -53,7 +54,7 @@ namespace Workers.Controllers
             Weekendrepository.Create(weekend);
             return Redirect("/HolydaysView");
         }
-        [Route("/DeleteHolyDay/{holidaysId}")]
+      /*  [Route("/DeleteHolyDay/{holidaysId}")]*/
         public IActionResult DeleteHolyDay(Guid holidaysId)
         {
             Weekend weekend = Weekendrepository.FindById(holidaysId);

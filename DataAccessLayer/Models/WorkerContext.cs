@@ -23,18 +23,18 @@ namespace DataAccessLayer.Models
             :base()
         {
         }
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Person>()
-        //         .HasOne(s => s.Team)
-        //         .WithMany(g => g.Workers)
-        //         .HasForeignKey(fk => fk.TeamId);
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+           modelBuilder.Entity<Person>()
+                .HasOne(s => s.Team)
+                .WithMany(g => g.Workers)
+                 .OnDelete(DeleteBehavior.SetNull);
         //    modelBuilder.Entity<Team>()
         //        .HasMany(c => c.Workers)
         //        .WithOne(e => e.Team);
         //    // .WillCascadeOnDelete(false);
         //    //modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
-        //}
+        }
 
 
     }

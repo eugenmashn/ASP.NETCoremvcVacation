@@ -23,7 +23,7 @@ namespace DataAccessLayer
          var optionsBuilder = new DbContextOptionsBuilder<WorkerContext>();
 
          var options = optionsBuilder
-                .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=helloappdb;Trusted_Connection=True;")
+                .UseSqlServer(@"Server=(localdb)\MsSqlLocalDb;Database=Workers;Trusted_Connection=True;")
                 .Options;
             Vacationrepository = new EFGenericRepository<Vacation>(new WorkerContext(options));
             TeamRepository = new EFGenericRepository<Team>(new WorkerContext(options));
@@ -93,7 +93,7 @@ namespace DataAccessLayer
         public int ResultCountAddDay(DateTime CountDate, Person person)
         {
            
-            List<Person> IndexDayTwo = Personrepository.Get(x=>x.Id==person.Id).ToList();
+            List<Person> IndexDayTwo = Personrepository.Get().ToList();
               int IndexDay = person.Days;
 
 

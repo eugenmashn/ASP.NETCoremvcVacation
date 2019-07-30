@@ -19,7 +19,7 @@
 </div>
 <div class="col">
     <h2>Days vacation</h2>
-    @Html.TextBoxFor(m => m.Days, new { @class = "form-control", @type = "number" })
+    @Html.TextBoxFor(m => m.Days, new { @class = "form-control", @type = "number",@min=0,@max=18 })
     @*<input type="number" class="form-control" name="MinNumberWorkers">*@
 </div>
 <div style="margin:10px 0px " class=" col">

@@ -44,6 +44,8 @@ namespace Workers.Controllers
            // newPerson.TeamId = TeamId;
             newPerson.Days = person.Days;
             newPerson.Team = team;
+            if(newPerson.Days>18||newPerson.Days<0)
+                Redirect("~/");
             Personrepository.Create(newPerson);
             return Redirect("~/");
         }
@@ -66,8 +68,10 @@ namespace Workers.Controllers
             Updateperson.LastName = person.LastName;
             Updateperson.Days = person.Days;
             Updateperson.Team = team;
+            if(Updateperson.Days<0||Updateperson.Days>20)
+                return Redirect("~/Home/Workers");
             Personrepository.Update(Updateperson);
-            return Redirect("~/Workers");
+            return Redirect("~/Home/Workers");
         }
         
               [Route("DeletePerson/{personId}")]

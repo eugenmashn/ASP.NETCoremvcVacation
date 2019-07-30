@@ -10,6 +10,7 @@ using System.Globalization;
 using DataAccessLayer;
 namespace Workers.Controllers
 {
+    [Route("[controller]/[action]/{personId?}")]
     public class VacationController : Controller
     {
         public IEFGenericRepository<Team> Teamrepository { get; set; }
@@ -25,14 +26,14 @@ namespace Workers.Controllers
             Weekendrepository = weekendpository;
             Vacationrepository = vacationrepository;
         }
-        [Route("/ShowVacation/{personId}") ]
+  /*      [Route("/ShowVacation/{personId}") ]*/
         public IActionResult ShowVacation(Guid personId)
         {
             ViewBag.PersonId = personId;
             List<Vacation> vacations = Vacationrepository.IncludeGet(t=>t.People).Where(i => i.Peopleid == personId).ToList();
             return View(vacations);
         }
-        [Route("/AddnewVacation/{personId}")]
+  /*      [Route("/AddnewVacation/{personId}")]*/
         public IActionResult AddnewVacation(Guid personId)
         {
             List<Weekend> weekends = Weekendrepository.Get().ToList();
@@ -43,7 +44,7 @@ namespace Workers.Controllers
             ViewBag.PersonId = personId;
             return View();
         }
-        [Route("/CreateNewVacation/{personId}")]
+/*        [Route("/CreateNewVacation/{personId}")]*/
         public IActionResult CreateNewVacation(Guid personId,VacationTwo vacation)
         {
             Person person = Personrepository.FindById(personId);
@@ -57,20 +58,23 @@ namespace Workers.Controllers
             NewVacation.People = person;
             /* if (person.Days<= NewVacation.Days)
                  return Redirect("/Workers"); */
-            int a = countVacation.ResultCountAddDay(NewVacation.FirstDate,person);
+            if(NewVacation.FirstDate>NewVacation.SecontDate|| countVacation.CountDaysVacation(NewVacation.FirstDate, NewVacation.SecontDate)>person.Days)
+                   return Redirect("/Home/Workers");
             person.Days -= countVacation.CountDaysVacation(NewVacation.FirstDate,NewVacation.SecontDate);
+     
             Vacationrepository.Create(NewVacation);
-            return Redirect("/Workers");
+            return Redirect("/Home/Workers");
         }
-        [Route("/Delete/{vacationID}/{personId}")]
-        public IActionResult DeleteVacation(Guid vacationID,Guid personId)
+           [Route("/Delete/{vacationId}/{personId}")]
+
+        public IActionResult DeleteVacation(Guid vacationId,Guid personId)
         {
-            Vacation vacation = Vacationrepository.FindById(vacationID);
+            Vacation vacation = Vacationrepository.FindById(vacationId);
             Person person = Personrepository.FindById(personId);
             person.Days += vacation.Days;
             Vacationrepository.Remove(vacation);
             Personrepository.Update(person);
-            return Redirect("/Workers");
+            return Redirect("/Home/Workers");
         }
     }
 }

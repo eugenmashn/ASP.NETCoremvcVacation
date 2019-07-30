@@ -64,23 +64,23 @@
             var date =moment( new Date(startDate));
            moment(date).format('MM/DD/YYYY');
              let IndexDay = @ViewBag.AddDays;
-                   console.log(IndexDay);
+                   /*console.log(IndexDay);*/
                 for (let i = 0; i <= IndexDay; i++)
                 {
                     if (moment(date).day()== 6 || moment(date).day() == 0 || AuditDate(date))
                     {
                        
                         /*     debugger;*/
-                        console.log("this is Index++");
-                           console.log(IndexDay);
+                       /* console.log("this is Index++");
+                           console.log(IndexDay);*/
                         IndexDay ++;
                  
                     }
                    
                     date = moment(date).add(1, 'days').format('MM/DD/YYYY');
             }
-            console.log(IndexDay);
-            console.log("Finish");
+          /*  console.log(IndexDay);
+            console.log("Finish");*/
             return IndexDay;
         }
         function AuditDate(startDate)
@@ -97,7 +97,7 @@
            
                if ((moment(startDate) >=moment(new Date (e.startDate)).month() && moment(startDate) <= moment(new Date (e.endDate))))
                {
-                   console.log("this is true");
+               /*    console.log("this is true");*/
                    checkonHolydays = true;
                }
                 

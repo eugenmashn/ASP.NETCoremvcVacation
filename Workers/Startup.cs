@@ -61,6 +61,18 @@ namespace Workers
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "Holydays",
+                    template: "{controller=Holidays}/{action}/{id?}"
+               );
+                routes.MapRoute(
+                    name: "Person",
+                    template: "{controller=Person}/{action}/{id?}"
+               );
+                routes.MapRoute(
+                    name: "Vacation",
+                     template: "{controller=Vacation}/{action}/{vacationId?}/{personId?}"
+                    );
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
