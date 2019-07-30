@@ -80,8 +80,8 @@ namespace DataAccessLayer
         public bool AuditDate(DateTime date)
         {
             bool TrueorFalse = false;
-            List<Weekend> list = Weekendrepository.Get().ToList();
-            foreach (var i in list)
+            List<Weekend> listweekend = Weekendrepository.Get().ToList();
+            foreach (var i in listweekend)
             {
                 if (((DateTime.Compare(date.Date, i.startDate.Date) >= 0) && DateTime.Compare(date.Date, i.EndDate.Date) <= 0) || (date == i.startDate))
                 {
@@ -93,8 +93,10 @@ namespace DataAccessLayer
         public int ResultCountAddDay(DateTime CountDate, Person person)
         {
            
-            int IndexDay = person.Days;
-           
+            List<Person> IndexDayTwo = Personrepository.Get(x=>x.Id==person.Id).ToList();
+              int IndexDay = person.Days;
+
+
                 for (int i = 0; i <= IndexDay; i++)
                 {
                     if (CountDate.DayOfWeek == DayOfWeek.Sunday || CountDate.DayOfWeek == DayOfWeek.Saturday || AuditDate(CountDate))
@@ -134,8 +136,6 @@ namespace DataAccessLayer
                     CountDaysHolyDays--;
                 }
                 CountDaysHolyDays++;
-
-
                 i = i.AddDays(1);
             }
             return CountDaysHolyDays;

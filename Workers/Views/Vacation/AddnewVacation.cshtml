@@ -13,6 +13,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
 </head>
 <body>
     @{
@@ -35,6 +36,7 @@
             iconsLibrary: 'fontawesome',
             minDate: today,
             maxDate: function () {
+                 /*console.log("datepicker1");*/
                 return $('#endDate').val();
             }
         });
@@ -43,7 +45,64 @@
             iconsLibrary: 'fontawesome',
             minDate: function () {
                 return $('#startDate').val();
+            },
+            maxDate: function ()
+            {
+               
+              /*  console.log("datepicker2");*/
+                let startDate = new Date( document.getElementById('startDate').value);
+                let newdate = new Date(startDate);
+                newdate.setDate(newdate.getDate() + GetAddDays(startDate)-1);
+          
+                return newdate;
             }
         });
+        function GetAddDays(startDate)
+        {
+            
+            
+            var date =moment( new Date(startDate));
+           moment(date).format('MM/DD/YYYY');
+             let IndexDay = @ViewBag.AddDays;
+                   console.log(IndexDay);
+                for (let i = 0; i <= IndexDay; i++)
+                {
+                    if (moment(date).day()== 6 || moment(date).day() == 0 || AuditDate(date))
+                    {
+                       
+                        /*     debugger;*/
+                        console.log("this is Index++");
+                           console.log(IndexDay);
+                        IndexDay ++;
+                 
+                    }
+                   
+                    date = moment(date).add(1, 'days').format('MM/DD/YYYY');
+            }
+            console.log(IndexDay);
+            console.log("Finish");
+            return IndexDay;
+        }
+        function AuditDate(startDate)
+        {
+            let checkonHolydays=false
+            let IndexDay = @ViewBag.AddDays;
+            
+       
+            let Weekends = [];
+            Weekends=@Html.Raw(Json.Serialize(ViewBag.weekends));
+          
+
+            Weekends.forEach((e) => {
+           
+               if ((moment(startDate) >=moment(new Date (e.startDate)).month() && moment(startDate) <= moment(new Date (e.endDate))))
+               {
+                   console.log("this is true");
+                   checkonHolydays = true;
+               }
+                
+            })
+            return checkonHolydays;
+        }
     </script>
 </body>

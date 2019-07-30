@@ -12,16 +12,16 @@ namespace Workers.Controllers
 {
     public class VacationController : Controller
     {
-        public IEFGenericRepository<Team> TeamRepository { get; set; }
+        public IEFGenericRepository<Team> Teamrepository { get; set; }
 
         public IEFGenericRepository<Person> Personrepository { get; set; }
         public IEFGenericRepository<Weekend> Weekendrepository { get; set; }
 
         public IEFGenericRepository<Vacation> Vacationrepository { get; set; }
-        public VacationController(IEFGenericRepository<Person> personrepository, IEFGenericRepository<Team> teamRepository, IEFGenericRepository<Weekend> weekendpository, IEFGenericRepository<Vacation> vacationrepository)
+        public VacationController(IEFGenericRepository<Person> personrepository, IEFGenericRepository<Team> teamrepository, IEFGenericRepository<Weekend> weekendpository, IEFGenericRepository<Vacation> vacationrepository)
         {
             Personrepository = personrepository;
-            TeamRepository = teamRepository;
+            Teamrepository = teamrepository;
             Weekendrepository = weekendpository;
             Vacationrepository = vacationrepository;
         }
@@ -35,6 +35,11 @@ namespace Workers.Controllers
         [Route("/AddnewVacation/{personId}")]
         public IActionResult AddnewVacation(Guid personId)
         {
+            List<Weekend> weekends = Weekendrepository.Get().ToList();
+            Person person = Personrepository.FindById(personId);
+            ViewBag.AddDays = person.Days;
+            ViewBag.weekends = weekends;
+            //ViewBag.AddDay=
             ViewBag.PersonId = personId;
             return View();
         }
@@ -50,9 +55,10 @@ namespace Workers.Controllers
             NewVacation.SecontDate = DateTime.ParseExact(vacation.EndDay, "M/d/yyyy", CultureInfo.InvariantCulture);
             NewVacation.Days = countVacation.CountDaysVacation(NewVacation.FirstDate, NewVacation.SecontDate);
             NewVacation.People = person;
-            if (person.Days< NewVacation.Days)
-                return Redirect("/Workers"); ;
-            person.Days -= NewVacation.Days;
+            /* if (person.Days<= NewVacation.Days)
+                 return Redirect("/Workers"); */
+            int a = countVacation.ResultCountAddDay(NewVacation.FirstDate,person);
+            person.Days -= countVacation.CountDaysVacation(NewVacation.FirstDate,NewVacation.SecontDate);
             Vacationrepository.Create(NewVacation);
             return Redirect("/Workers");
         }
