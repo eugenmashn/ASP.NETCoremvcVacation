@@ -12,6 +12,7 @@ namespace DataAccessLayer.Models
         public DbSet<Weekend> HolyDays { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<GlobalSetting> GlobalSettings { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public WorkerContext(DbContextOptions<WorkerContext> options)
             : base(options)

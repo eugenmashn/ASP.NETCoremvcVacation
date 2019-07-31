@@ -7,10 +7,10 @@ using DataAccessLayer.Models;
 using DataAccessLayer.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Workers.Models;
-
+using Microsoft.AspNetCore.Authorization;
 namespace Workers.Controllers
 {
-
+   
     public class HomeController : Controller
     {
         public IEFGenericRepository<Team> Teamrepository { get; set; }
@@ -20,13 +20,15 @@ namespace Workers.Controllers
             Teamrepository = teamrepository;
             PersonRepository = personrepository;
         }
-       
+        [Authorize]
+        [Route("/")]
         public IActionResult Index()
         {
            List<Team> Teams= Teamrepository.Get().ToList();
 
             return View(Teams);
         }
+        [Authorize]
         [Route("[controller]/[action]")]
        /* [Route("/Workers")]*/
         public IActionResult Workers()
@@ -44,7 +46,7 @@ namespace Workers.Controllers
 
             return View();
         }*/
-
+        [Authorize]
         [Route("[controller]/[action]")]
     /*    [Route("/AddnewTeam")]*/
         public IActionResult AddnewTeam()
@@ -53,6 +55,7 @@ namespace Workers.Controllers
 
             return View();
         }
+        [Authorize]
         /* [Route("/CreatenewTeam")]*/
         [Route("[controller]/[action]")]
         [HttpPost]
@@ -68,6 +71,7 @@ namespace Workers.Controllers
 
             return Redirect("~/");
         }
+        [Authorize]
         [Route("[controller]/[action]")]
         /* [Route("/Contact")]*/
         public IActionResult Contact()
@@ -80,7 +84,7 @@ namespace Workers.Controllers
         {
             return View();
         }
-        
+        [Authorize]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

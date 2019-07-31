@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using DataAccessLayer.Models;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repository
 {
@@ -69,6 +70,10 @@ namespace DataAccessLayer.Repository
 
                 }
             }
+       /* public async Task<TEntity> GetAsync(Expression< Func<TEntity, bool>> predicate)
+        {
+            return await _dbSet.FirstOrDefaultAsync(predicate);
+        }*/
         public IEnumerable<TEntity> IncludeGet( Expression<Func<TEntity, object>> includes)  
         {
          

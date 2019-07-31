@@ -5,11 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataAccessLayer.Models;
 using DataAccessLayer.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Workers.Models;
 
 namespace Workers.Controllers
 {
+    [Authorize]
     public class TeamController : Controller
     {
         public IEFGenericRepository<Team> TeamRepository { get; set;}

@@ -8,8 +8,11 @@ using DataAccessLayer.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using DataAccessLayer;
+using Microsoft.AspNetCore.Authorization;
+
 namespace Workers.Controllers
 {
+    [Authorize]
     [Route("[controller]/[action]/{personId?}")]
     public class VacationController : Controller
     {

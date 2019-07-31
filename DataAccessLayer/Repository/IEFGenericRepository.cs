@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
-
+using System.Threading.Tasks;
 namespace DataAccessLayer.Repository
 {
     public interface IEFGenericRepository<TEntity> where TEntity : class
@@ -18,7 +18,6 @@ namespace DataAccessLayer.Repository
         int Count();
         IEnumerable<TEntity> GetSort(Func<TEntity, string> predicate);
         void Update(TEntity item);
-
         IEnumerable<TEntity> IncludeGet(Expression<Func<TEntity, object>> includes);
     }
 }

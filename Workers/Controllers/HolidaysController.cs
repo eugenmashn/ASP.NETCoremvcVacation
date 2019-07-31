@@ -7,9 +7,11 @@ using DataAccessLayer.Repository;
 using DataAccessLayer.Models;
 using Workers.Models_View;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Workers.Controllers
 {
+    [Authorize]
     [Route("[controller]/[action]")]
     public class HolidaysController : Controller
     {
