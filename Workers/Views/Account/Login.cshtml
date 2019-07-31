@@ -4,19 +4,19 @@
 }
 
 <h2>Login in the site</h2>
-<a asp-action="Register" asp-controller="Account">Registration </a>
+
 
 <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
     <div class="validation" asp-validation-summary="ModelOnly" />
     <div>
         <div class="form-group">
             <label asp-for="Email" >Write Email</label>
-            <input type="text" asp-for="Email"class="form-control" />
+            <input type="text" asp-for="Email"class="form-control"style="width:13em;" />
             <span asp-validation-for="Email" />
         </div>
         <div class="form-group">
-            <label asp-for="Password">Write password</label>
-            <input asp-for="Password"class="form-control" />
+            <label asp-for="Password" >Write password</label>
+            <input asp-for="Password"class="form-control"style="width:13em;" />
             <span asp-validation-for="Password" />
         </div>
         <div class="form-group">
@@ -24,3 +24,4 @@
         </div>
     </div>
 </form>
+<a asp-action="Register" asp-controller="Account">Registration </a>
