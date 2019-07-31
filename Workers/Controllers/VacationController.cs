@@ -57,12 +57,13 @@ namespace Workers.Controllers
             NewVacation.Id = Guid.NewGuid();
             NewVacation.FirstDate = DateTime.ParseExact(vacation.startDay, "M/d/yyyy", CultureInfo.InvariantCulture); 
             NewVacation.SecontDate = DateTime.ParseExact(vacation.EndDay, "M/d/yyyy", CultureInfo.InvariantCulture);
+            if (NewVacation.FirstDate>NewVacation.SecontDate|| countVacation.CountDaysVacation(NewVacation.FirstDate, NewVacation.SecontDate)>person.Days)
+                   return Redirect("/Home/Workers");
             NewVacation.Days = countVacation.CountDaysVacation(NewVacation.FirstDate, NewVacation.SecontDate);
             NewVacation.People = person;
             /* if (person.Days<= NewVacation.Days)
                  return Redirect("/Workers"); */
-            if(NewVacation.FirstDate>NewVacation.SecontDate|| countVacation.CountDaysVacation(NewVacation.FirstDate, NewVacation.SecontDate)>person.Days)
-                   return Redirect("/Home/Workers");
+           
             person.Days -= countVacation.CountDaysVacation(NewVacation.FirstDate,NewVacation.SecontDate);
      
             Vacationrepository.Create(NewVacation);
