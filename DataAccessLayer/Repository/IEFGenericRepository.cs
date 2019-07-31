@@ -16,6 +16,8 @@ namespace DataAccessLayer.Repository
         void Remove(TEntity item);
         int Count(Func<TEntity, bool> predicate);
         int Count();
+        Task<TEntity> FindAsyncMethod(Expression<Func<TEntity, bool>> predicate);
+        Task AddAsyn(TEntity item);
         IEnumerable<TEntity> GetSort(Func<TEntity, string> predicate);
         void Update(TEntity item);
         IEnumerable<TEntity> IncludeGet(Expression<Func<TEntity, object>> includes);

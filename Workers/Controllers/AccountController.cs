@@ -12,15 +12,18 @@ using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Security.Principal;
+
 namespace Workers.Controllers
 {
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private WorkerContext db;
-        public AccountController(WorkerContext context)
+    /*    private WorkerContext db;*/
+        public IEFGenericRepository<User> Userrepository { get; set; }
+        public AccountController(WorkerContext context, IEFGenericRepository<User> userrepository)
         {
-            db = context;
+       /*     db = context;*/
+            Userrepository = userrepository;
         }
         public IActionResult Index()
         {
@@ -43,8 +46,9 @@ namespace Workers.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user =await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
-                if(user!=null)
+                /* User user =await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);*/
+                User user =await Userrepository.FindAsyncMethod(u => u.Email == model.Email && u.Password == model.Password);
+                if (user!=null)
                 {
                     await Authenticate(model.Email); 
 
@@ -68,12 +72,14 @@ namespace Workers.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+                /*              User user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);*/
+                User user = await Userrepository.FindAsyncMethod(u => u.Email == model.Email );
                 if (user == null)
                 {
-                    db.Users.Add(new User { Email = model.Email, Password = model.Password });
-                    await db.SaveChangesAsync();
 
+                    /* db.Users.Add(new User { Email = model.Email, Password = model.Password });*/
+                    /* await db.SaveChangesAsync();*/
+                   await Userrepository.AddAsyn(new User { Email = model.Email, Password = model.Password,Id=Guid.NewGuid() });
                     await Authenticate(model.Email); 
 
                     return RedirectToAction("Index", "Home");

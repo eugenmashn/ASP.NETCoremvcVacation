@@ -32,13 +32,23 @@ namespace DataAccessLayer.Repository
                 return _dbSet.Find(id);
             }
 
+        public async Task<TEntity> FindAsyncMethod(Expression<Func<TEntity, bool>> predicate)
+        {
 
-            /* public IEnumerable<TEntity> GetEntities()
-             {
+            return await _dbSet.FirstOrDefaultAsync(predicate);
+        }
+        public async Task AddAsyn(TEntity item)
+        {
+             _dbSet.Add(item);
+            await _context.SaveChangesAsync();
+        }
 
-                 return _dbSet.ToList();
-             }*/
-            public TEntity FindById(Func<TEntity, bool> predicate)
+        /* public IEnumerable<TEntity> GetEntities()
+         {
+
+             return _dbSet.ToList();
+         }*/
+        public TEntity FindById(Func<TEntity, bool> predicate)
             {
 
                 var item = _dbSet.FirstOrDefault(predicate);
