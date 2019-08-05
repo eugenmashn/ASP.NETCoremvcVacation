@@ -12,9 +12,6 @@ namespace Workers.Models_View
         [Required(ErrorMessage = "Write password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        [Display(Name = "Remamber?")]
-        public bool RememberMe { get; set; }
-
-        public string ReturnUrl { get; set; }
+        public string ReturnUrl { get; internal set; }
     }
 }
