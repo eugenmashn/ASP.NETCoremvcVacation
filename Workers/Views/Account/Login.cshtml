@@ -6,18 +6,22 @@
 <h2>Login in the site</h2>
 
 
-<form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
+<form method="post" asp-action="Login" asp-controller="Account" asp-anti-forgery="true" asp-route-returnUrl="@Model.ReturnUrl">
     <div class="validation" asp-validation-summary="ModelOnly" />
     <div>
         <div class="form-group">
-            <label asp-for="Email" >Write Email</label>
-            <input type="text" asp-for="Email"class="form-control"style="width:13em;" />
+            <label asp-for="Email">Write Email</label>
+            <input type="text" asp-for="Email" class="form-control" style="width:13em;" />
             <span asp-validation-for="Email" />
         </div>
         <div class="form-group">
-            <label asp-for="Password" >Write password</label>
-            <input asp-for="Password"class="form-control"style="width:13em;" />
+            <label asp-for="Password">Write password</label>
+            <input asp-for="Password" class="form-control" style="width:13em;" />
             <span asp-validation-for="Password" />
+        </div>
+        <div>
+            <label asp-for="RememberMe"></label><br />
+            <input asp-for="RememberMe" />
         </div>
         <div class="form-group">
             <input type="submit" value="Войти" class="btn" />

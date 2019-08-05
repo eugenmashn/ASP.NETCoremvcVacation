@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Workers.Controllers
 {
-    [Authorize]
+/*    [Authorize]*/
     [Route("[controller]/[action]/{personId?}")]
     public class VacationController : Controller
     {

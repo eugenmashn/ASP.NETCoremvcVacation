@@ -7,24 +7,24 @@
 
 
 <div class="row ">
-   
-    
-    <div class="col-md>
-        <div ">
-            <h2>Team</h2>
-            @foreach (var team in Model)
-            {
-                <li><a asp-area="" asp-controller="Team" asp-action="TeamIndex" asp-route-TeamName="@team.TeamName" asp-route-TeamId="@team.Id">@team.TeamName</a> </li>
-            }
 
 
-        </div>
-        <div>
-            <a asp-area="" asp-controller="Home" asp-action="AddnewTeam">
-                <button type="button" class="btn btn-secondary">
-                    Add new Team
-                </button>
-            </a>
-        </div>
-    </div class="col-md-3">
-</div>
+        <div class="col-md>
+            <div ">
+                <h2>Team</h2>
+                @foreach (var team in Model)
+                {
+                    <li><a asp-area="" asp-controller="Team" asp-action="TeamIndex" asp-route-TeamName="@team.TeamName" asp-route-TeamId="@team.Id">@team.TeamName</a> </li>
+                }
+
+
+            </div>
+            <div>
+                <a asp-area="" asp-controller="Home" asp-action="AddnewTeam">
+                    <button type="button" class="btn btn-secondary">
+                        Add new Team
+                    </button>
+                </a>
+            </div>
+        </div class="col-md-3">
+    </div>

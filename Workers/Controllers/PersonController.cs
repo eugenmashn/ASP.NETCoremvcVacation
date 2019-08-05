@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Workers.Controllers
 {
-    [Authorize]
+/*    [Authorize]*/
     public class PersonController : Controller
     {
 

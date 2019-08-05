@@ -41,7 +41,11 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Workers">Workers</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     <li><a asp-area="" asp-controller="Holidays" asp-action="HolydaysView">Holydays</a></li>
-                    <li><a asp-area="" asp-controller="Account" asp-action="Logout" style="margin-left: 15em;">Logout</a></li>
+                    <li>
+                        <form method="post" asp-controller="Account" asp-action="Logout">
+                            <input  style="margin-left: 18em;margin-top:10px; " type="submit" class="btn btn-primary"  value="Logout" />
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>

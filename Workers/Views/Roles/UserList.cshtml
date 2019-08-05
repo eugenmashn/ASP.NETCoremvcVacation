@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Workers.Models.UserAuthentication>
+@{
+    ViewData["Title"] = "UserList";
+
+}
+
+<h2>UserList</h2>
+
+model IEnumerable<CustomIdentityApp.Models.User>
+
+    <table class="table">
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-userid="@user.Id"> Roles</a>
+                </td>
+            </tr>
+        }
+    </table>

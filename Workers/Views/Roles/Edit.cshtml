@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model Workers.Models.ChangeRoleViewModel
+@{
+  ViewData["Title"] = "Home Page";
+}
+
+
+<h2>Edit user</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" name="UserId" value="@Model.UserId" />
+    <div class="form-group">
+        @foreach (IdentityRole role in Model.AllRoles)
+        {
+            <input type="checkbox" name="roles" value="@role.Name"
+                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />@role.Name <br />
+         }
+    </div>
+    <button type="submit" class="btn btn-primary">safe</button>
+</form>

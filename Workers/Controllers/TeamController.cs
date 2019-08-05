@@ -11,7 +11,7 @@ using Workers.Models;
 
 namespace Workers.Controllers
 {
-    [Authorize]
+/*    [Authorize]*/
     public class TeamController : Controller
     {
         public IEFGenericRepository<Team> TeamRepository { get; set;}

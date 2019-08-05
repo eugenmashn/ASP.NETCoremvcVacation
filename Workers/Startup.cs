@@ -13,6 +13,9 @@ using DataAccessLayer.Models;
 using DataAccessLayer.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Workers.Models;
+using Microsoft.AspNetCore.Identity;
+
 namespace Workers
 {
     public class Startup
@@ -35,13 +38,17 @@ namespace Workers
             });
           
             string connection = Configuration.GetConnectionString("DefaultConnection");
+            string connectionstrIdentity = Configuration.GetConnectionString("IdentityServer");
             services.AddDbContext<WorkerContext>(options => options.UseSqlServer(connection));
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => 
-                {
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                });
+            services.AddDbContext<AuthenticationContext>(options => options.UseSqlServer(connection));
+            /*   services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                   .AddCookie(options => 
+                   {
+                       options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                   });*/
 
+            services.AddIdentity<UserAuthentication, IdentityRole>()
+              .AddEntityFrameworkStores<AuthenticationContext>();
             services.AddMvc();
             services.AddScoped(typeof(IEFGenericRepository<>), typeof(EFGenericRepository<>));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -62,14 +69,17 @@ namespace Workers
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseAuthentication();
+          app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                      name: "Account",
                      template: "{controller=Account}/{action}/{id?}"
                 );
-
+                routes.MapRoute(
+                    name: "Roles",
+                    template: "{controller=Roles}/{action}/{id?}"
+               );
                 routes.MapRoute(
                     name: "Holydays",
                     template: "{controller=Holidays}/{action}/{id?}"
