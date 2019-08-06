@@ -1,4 +1,4 @@
-﻿@model Workers.ModelsView.VacationTwo;
+﻿@model Workers.ModelsView.VacationView;
 @{
     ViewData["Title"] = "AddnewVacation";
 }
@@ -95,7 +95,7 @@
 
             Weekends.forEach((e) => {
            
-               if ((moment(startDate) >=moment(new Date (e.startDate)).month() && moment(startDate) <= moment(new Date (e.endDate))))
+               if ((moment(startDate) >=moment(new Date (e.startDate)) && moment(startDate) <= moment(new Date (e.endDate))))
                {
                /*    console.log("this is true");*/
                    checkonHolydays = true;

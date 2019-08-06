@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Workers.Controllers
 {
-/*    [Authorize]*/
+    [Authorize]
     [Route("[controller]/[action]/{personId?}")]
     public class VacationController : Controller
     {
@@ -36,7 +36,8 @@ namespace Workers.Controllers
             List<Vacation> vacations = Vacationrepository.IncludeGet(t=>t.People).Where(i => i.Peopleid == personId).ToList();
             return View(vacations);
         }
-  /*      [Route("/AddnewVacation/{personId}")]*/
+        /*      [Route("/AddnewVacation/{personId}")]*/
+        [Authorize(Roles = "admin")]
         public IActionResult AddnewVacation(Guid personId)
         {
             List<Weekend> weekends = Weekendrepository.Get().ToList();
@@ -47,18 +48,20 @@ namespace Workers.Controllers
             ViewBag.PersonId = personId;
             return View();
         }
-/*        [Route("/CreateNewVacation/{personId}")]*/
-        public IActionResult CreateNewVacation(Guid personId,VacationTwo vacation)
+        /*        [Route("/CreateNewVacation/{personId}")]*/
+        [Authorize(Roles = "admin")]
+        public IActionResult CreateNewVacation(Guid personId,VacationView vacation)
         {
             Person person = Personrepository.FindById(personId);
             
             CountVacation countVacation = new CountVacation();
             Vacation NewVacation = new Vacation();
+            if (NewVacation.FirstDate>NewVacation.SecontDate|| countVacation.CountDaysVacation(NewVacation.FirstDate, NewVacation.SecontDate)>person.Days||NewVacation.SecontDate==null||NewVacation.FirstDate==null)
+                   return Redirect("/Home/Workers/Home/Workers");
             NewVacation.Id = Guid.NewGuid();
             NewVacation.FirstDate = DateTime.ParseExact(vacation.startDay, "M/d/yyyy", CultureInfo.InvariantCulture); 
             NewVacation.SecontDate = DateTime.ParseExact(vacation.EndDay, "M/d/yyyy", CultureInfo.InvariantCulture);
-            if (NewVacation.FirstDate>NewVacation.SecontDate|| countVacation.CountDaysVacation(NewVacation.FirstDate, NewVacation.SecontDate)>person.Days)
-                   return Redirect("/Home/Workers");
+       
             NewVacation.Days = countVacation.CountDaysVacation(NewVacation.FirstDate, NewVacation.SecontDate);
             NewVacation.People = person;
             /* if (person.Days<= NewVacation.Days)
@@ -67,10 +70,10 @@ namespace Workers.Controllers
             person.Days -= countVacation.CountDaysVacation(NewVacation.FirstDate,NewVacation.SecontDate);
      
             Vacationrepository.Create(NewVacation);
-            return Redirect("/Home/Workers");
+            return Redirect("/Home/Workers/Home/Workers");
         }
            [Route("/Delete/{vacationId}/{personId}")]
-
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteVacation(Guid vacationId,Guid personId)
         {
             Vacation vacation = Vacationrepository.FindById(vacationId);
@@ -78,7 +81,7 @@ namespace Workers.Controllers
             person.Days += vacation.Days;
             Vacationrepository.Remove(vacation);
             Personrepository.Update(person);
-            return Redirect("/Home/Workers");
+            return Redirect("/Home/Workers/Home/Workers");
         }
     }
 }

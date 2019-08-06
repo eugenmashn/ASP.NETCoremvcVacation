@@ -50,7 +50,7 @@
                 Start Date: @Html.TextBoxFor(model => model.startDay, new { @id = "startDate", @width = "276"})
                 @*<input id="startDate" width="276" />*@
                 @*End Date: <input id="endDate" width="276" />.*@
-                End Date: @Html.TextBoxFor(model => model.EndDay, new { @id = "endDate", @width = "276" })
+                number days: @Html.TextBoxFor(model => model.AddDays, new {  @class  = "form-control", @type = "number",@min=0,@max=10, @width = "276" }  )
             </div>
             <button type="submit" class=" btn btn-primary btn-lg btn-block">Save Date</button>
         }
@@ -60,18 +60,9 @@
                 uiLibrary: 'bootstrap4',
                 iconsLibrary: 'fontawesome',
                 minDate: today,
-                maxDate: function () {
-                    return $('#endDate').val();
-                }
+             
             });
-            $('#endDate').datepicker({
-                uiLibrary: 'bootstrap4',
-                iconsLibrary: 'fontawesome',
-                minDate: function () {
-
-                    return $('#startDate').val();
-                }
-            });
+        
         </script>
     </body>
 

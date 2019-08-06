@@ -21,15 +21,21 @@
             {
 
                 <tr>
-                    <th scope="row">@vacation.FirstDate </th>
-                    <th scope="row">@vacation.SecontDate </th>
+                    <th scope="row">@vacation.FirstDate.ToString("yyyy-MM-dd") </th>
+                    <th scope="row">@vacation.SecontDate.ToString("yyyy-MM-dd") </th>
                     <th scope="row">@vacation.Days </th>
-                    <th scope="row"><a asp-area="" asp-controller="Vacation" asp-action="DeleteVacation" asp-route-vacationID="@vacation.Id" asp-route-personId="@vacation.People.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
+                    @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
+                    {
+                        <th scope="row"><a asp-area="" asp-controller="Vacation" asp-action="DeleteVacation" asp-route-vacationID="@vacation.Id" asp-route-personId="@vacation.People.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
+                    }
                 </tr>
             }
         </tbody>
     </table>
 </div>
-<div class="row">
-    <a asp-area="" asp-controller="Vacation" asp-action="AddnewVacation" asp-route-personId="@ViewBag.PersonId"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Add new vacation</button></a>
-</div>
+@if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
+{
+    <div class="row">
+        <a asp-area="" asp-controller="Vacation" asp-action="AddnewVacation" asp-route-personId="@ViewBag.PersonId"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Add new vacation</button></a>
+    </div>
+}

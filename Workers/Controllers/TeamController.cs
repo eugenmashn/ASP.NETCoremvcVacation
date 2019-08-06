@@ -33,6 +33,7 @@ namespace Workers.Controllers
             return View(Personrepository.Get(person=>person.TeamId== TeamId));
         }
         [Route("{TeamName}")]
+        [Authorize(Roles = "admin")]
         public IActionResult TeamDelete(Guid TeamId)
         {
             Team team = TeamRepository.FindById(x=>x.Id==TeamId);

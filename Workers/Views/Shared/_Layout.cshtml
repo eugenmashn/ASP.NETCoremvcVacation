@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -19,7 +21,7 @@
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="~/lib/momentjs/moment.min.js"></script>
     <script src="~/lib/momentjs/locale/de-CH.js"></script>
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 </head>
@@ -37,15 +39,27 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+
                     <li><a asp-area="" asp-controller="" asp-action="">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Workers">Workers</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     <li><a asp-area="" asp-controller="Holidays" asp-action="HolydaysView">Holydays</a></li>
-                    <li>
-                        <form method="post" asp-controller="Account" asp-action="Logout">
-                            <input  style="margin-left: 18em;margin-top:10px; " type="submit" class="btn btn-primary"  value="Logout" />
-                        </form>
-                    </li>
+                    @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
+                    {
+                        <li><a asp-area="" asp-controller="Roles" asp-action="Index">Change roles</a></li> 
+                    }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+
+                        <li>
+                            <form method="post" asp-controller="Account" asp-action="Logout">
+                                <input style="margin-left: 18em;margin-top:10px; " type="submit" class="btn btn-primary" value="Logout" />
+                            </form>
+                        </li>
+                        <li>
+                            <h5 style="color:azure;margin-left:2em; margin-top:17px; ">@User.Identity.Name</h5>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>

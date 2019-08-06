@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Workers.ModelsView;
 using Workers.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Workers.Controllers
 {
     [Route("[controller]/[action]")]
+    [Authorize(Roles = "admin")]
     public class RolesController : Controller
     {
         RoleManager<IdentityRole> _roleManager;

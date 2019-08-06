@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Workers.Controllers
 {
-/*    [Authorize]*/
+   [Authorize]
     public class PersonController : Controller
     {
 
@@ -29,6 +29,7 @@ namespace Workers.Controllers
         // GET: /<controller>/
         [HttpGet]
         [Route("/AddnewPerson/{TeamId}")]
+        [Authorize(Roles = "admin")]
         public IActionResult AddnewPerson(Guid TeamId) {
             ViewData["Message"] = "Add NewPerson  page.";
             return View();
@@ -53,6 +54,7 @@ namespace Workers.Controllers
         }
         [HttpGet]
         [Route("ChangePerson/{personId}")]
+        [Authorize(Roles = "admin")]
         public IActionResult ChangePerson(Guid personId)
         {
             Person person = Personrepository.IncludeGet(p => p.Team).FirstOrDefault(p => p.Id == personId);
@@ -61,6 +63,7 @@ namespace Workers.Controllers
         }
         [HttpPost]
         [Route("ChangePerson/{personId}")]
+        [Authorize(Roles = "admin")]
         public IActionResult ChangePersonPost(Person person,Guid personId)
             
         {
@@ -77,12 +80,14 @@ namespace Workers.Controllers
         }
         
               [Route("DeletePerson/{personId}")]
+        [Authorize(Roles = "admin")]
         public IActionResult DeletePerson(Guid personId)
         {
             Person person = Personrepository.FindById(personId);
             Personrepository.Remove(person);
             return Redirect("~/Workers");
         }
+
       
     }
 }

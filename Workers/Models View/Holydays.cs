@@ -8,6 +8,7 @@ namespace Workers.Models_View
     public class Holydays
     {
        public string startDay { get; set; }
-        public string EndDay { get; set; }
+        public int  AddDays{ get; set; }
+        
     }
 }

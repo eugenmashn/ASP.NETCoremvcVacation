@@ -20,11 +20,16 @@
 
             </div>
             <div>
-                <a asp-area="" asp-controller="Home" asp-action="AddnewTeam">
-                    <button type="button" class="btn btn-secondary">
-                        Add new Team
-                    </button>
-                </a>
+                @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
+                {
+                    <a asp-area="" asp-controller="Home" asp-action="AddnewTeam">
+
+                        <button type="button" class="btn btn-secondary">
+                            Add new Team
+                        </button>
+
+                    </a>
+                 }
             </div>
         </div class="col-md-3">
     </div>

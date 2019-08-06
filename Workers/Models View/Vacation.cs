@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Workers.ModelsView
 { 
-    public class VacationTwo
+    public class VacationView
     {
       
         public string startDay { get; set; }

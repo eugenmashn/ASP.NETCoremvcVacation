@@ -46,7 +46,8 @@ namespace Workers.Controllers
                 {
 
                     await _signInManager.SignInAsync(userAuthentication, false);
-                    return Redirect("/Home/Workers");
+                    await _userManager.AddToRoleAsync(userAuthentication, "user");
+                    return Redirect("/");
                 }
                 else
                 {
@@ -80,12 +81,19 @@ namespace Workers.Controllers
                     }
                     else
                     {
-                        return Redirect("Home/Workers");
+                        return Redirect("/");
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "passwors or email is false");
+                    if ( await _userManager.FindByEmailAsync(model.Email) == null)
+                    {
+                        ModelState.AddModelError("Email", " email is false");
+                    }
+                    else
+                    { 
+                       ModelState.AddModelError("Password", "passwors  is false");
+                    }
                 }
             }
             return View(model);
@@ -97,7 +105,7 @@ namespace Workers.Controllers
         {
             
             await _signInManager.SignOutAsync();
-            return Redirect("/Home/Workers");
+            return Redirect("/");
         }
     }
 }

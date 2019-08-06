@@ -32,7 +32,8 @@ namespace Workers.Controllers
            List<Weekend> weekend = Weekendrepository.Get().ToList();
            return View(weekend);
         }
-       /* [Route("/CreateHolydays")]*/
+        /* [Route("/CreateHolydays")]*/
+        [Authorize(Roles = "admin")]
         public IActionResult CreateHolydays() {
 
             //  return Redirect("/HolydaysView");
@@ -46,22 +47,24 @@ namespace Workers.Controllers
                 return View();
             }
         }
-   /*     [Route("/CreateNewHolydays")]*/
+        /*     [Route("/CreateNewHolydays")]*/
+        [Authorize(Roles = "admin")]
         public IActionResult CreateNewHolydays(Holydays newweekend)
         {
             Weekend weekend = new Weekend();
             weekend.Id = Guid.NewGuid();
             weekend.startDate = DateTime.ParseExact(newweekend.startDay, "M/d/yyyy", CultureInfo.InvariantCulture);
-            weekend.EndDate = DateTime.ParseExact(newweekend.EndDay, "M/d/yyyy", CultureInfo.InvariantCulture);
+            weekend.EndDate = weekend.startDate.AddDays(newweekend.AddDays-1);
             Weekendrepository.Create(weekend);
-            return Redirect("/HolydaysView");
+            return Redirect("/Holidays/HolydaysView");
         }
-      /*  [Route("/DeleteHolyDay/{holidaysId}")]*/
+        /*  [Route("/DeleteHolyDay/{holidaysId}")]*/
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteHolyDay(Guid holidaysId)
         {
             Weekend weekend = Weekendrepository.FindById(holidaysId);
             Weekendrepository.Remove(weekend);
-            return Redirect("/HolydaysView");
+            return Redirect("/Holidays/HolydaysView");
         }
     }
 }

@@ -15,23 +15,29 @@
      <div class="row h-100">
          <div  >
              <div class="col-md-2">
-                 <a asp-area="" asp-controller="Person" asp-action="AddnewPerson" asp-route-TeamId="@ViewBag.TeamId">
-                     <button type="button" class="btn btn-secondary" style="margin: 1rem;">
-                         Add new Person
-                     </button>
+                 @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
+                 {
+                     <a asp-area="" asp-controller="Person" asp-action="AddnewPerson" asp-route-TeamId="@ViewBag.TeamId">
+                         <button type="button" class="btn btn-secondary" style="margin: 1rem;">
+                             Add new Person
+                         </button>
 
-                 </a>
-             </div>
+                     </a>
+                 }
+                 </div>
 
 
              <div class="col-md-2  >
                  <div class=" card card-inverse card-danger">
-                     <a asp-area="" asp-controller="Team" asp-action="TeamDelete"asp-route-TeamId="@ViewBag.TeamId">
-                         <button type="button" class="btn btn-secondary" style="margin:1rem;">
-                             Delete Team
-                         </button>
-                     </a>
-                 </div>
+                     @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
+                     {
+                         <a asp-area="" asp-controller="Team" asp-action="TeamDelete" asp-route-TeamId="@ViewBag.TeamId">
+                             <button type="button" class="btn btn-secondary" style="margin:1rem;">
+                                 Delete Team
+                             </button>
+                         </a>
+                     }
+                     </div>
              </div>
          </div>
     </div>

@@ -79,16 +79,16 @@ namespace DataAccessLayer
         }
         public bool AuditDate(DateTime date)
         {
-            bool TrueorFalse = false;
+          
             List<Weekend> listweekend = Weekendrepository.Get().ToList();
             foreach (var i in listweekend)
             {
                 if (((DateTime.Compare(date.Date, i.startDate.Date) >= 0) && DateTime.Compare(date.Date, i.EndDate.Date) <= 0) || (date == i.startDate))
                 {
-                    TrueorFalse = true;
+                    return true;
                 }
             }
-            return TrueorFalse;
+            return false;
         }
         public int ResultCountAddDay(DateTime CountDate, Person person)
         {
