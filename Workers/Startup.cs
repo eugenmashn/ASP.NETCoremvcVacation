@@ -15,11 +15,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Workers.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Workers
 {
     public class Startup
     {
+        //WorkerContext db;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -47,11 +49,18 @@ namespace Workers
                        options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                    });*/
 
+            //var optionsBuilder = new DbContextOptionsBuilder<WorkerContext>();
+
+            //var optionsf = optionsBuilder
+            //       .UseSqlServer(@"Server=(localdb)\MsSqlLocalDb;Database=Workers;Trusted_Connection=True;")
+            //       .Options;
+            //db = new WorkerContext(optionsf);
             services.AddIdentity<UserAuthentication, IdentityRole>()
               .AddEntityFrameworkStores<AuthenticationContext>();
             services.AddMvc();
             services.AddScoped(typeof(IEFGenericRepository<>), typeof(EFGenericRepository<>));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
