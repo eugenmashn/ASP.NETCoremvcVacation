@@ -19,13 +19,14 @@
     @{
         ViewData["Title"] = "CreateHolydays";
     }
-    @using (Html.BeginForm("CreateNewVacation", "Vacation", FormMethod.Post))
+    @using (Html.BeginForm("AddnewVacation", "Vacation", FormMethod.Post))
     {
         <div class="container">
             Start Date: @Html.TextBoxFor(model => model.startDay, new { @id = "startDate", @width = "276" })
             @*<input id="startDate" width="276" />*@
             @*End Date: <input id="endDate" width="276" />.*@
             End Date: @Html.TextBoxFor(model => model.EndDay, new { @id = "endDate", @width = "276" })
+            <span asp-validation-for="EndDay"></span>
         </div>
         <button type="submit" class=" btn btn-primary btn-lg btn-block">Save Date</button>
     }
@@ -48,19 +49,19 @@
             },
             maxDate: function ()
             {
-               
+
               /*  console.log("datepicker2");*/
                 let startDate = new Date( document.getElementById('startDate').value);
                 let newdate = new Date(startDate);
                 newdate.setDate(newdate.getDate() + GetAddDays(startDate)-1);
-          
+
                 return newdate;
             }
         });
         function GetAddDays(startDate)
         {
-            
-            
+
+
             var date =moment( new Date(startDate));
            moment(date).format('MM/DD/YYYY');
              let IndexDay = @ViewBag.AddDays;
@@ -69,14 +70,14 @@
                 {
                     if (moment(date).day()== 6 || moment(date).day() == 0 || AuditDate(date))
                     {
-                       
+
                         /*     debugger;*/
                        /* console.log("this is Index++");
                            console.log(IndexDay);*/
                         IndexDay ++;
-                 
+
                     }
-                   
+
                     date = moment(date).add(1, 'days').format('MM/DD/YYYY');
             }
           /*  console.log(IndexDay);
@@ -87,22 +88,40 @@
         {
             let checkonHolydays=false
             let IndexDay = @ViewBag.AddDays;
-            
-       
+
+
             let Weekends = [];
             Weekends=@Html.Raw(Json.Serialize(ViewBag.weekends));
-          
+
 
             Weekends.forEach((e) => {
-           
+
                if ((moment(startDate) >=moment(new Date (e.startDate)) && moment(startDate) <= moment(new Date (e.endDate))))
                {
                /*    console.log("this is true");*/
                    checkonHolydays = true;
                }
-                
+
             })
             return checkonHolydays;
         }
+
     </script>
+    @section scripts{
+
+        <environment names="Development">
+            <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+            <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        </environment>
+        <environment names="Staging,Production">
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"
+                    asp-fallback-src="~/lib/jquery-validation/dist/jquery.validate.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.validator">
+            </script>
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"
+                    asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive">
+            </script>
+        </environment>
+    }
 </body>

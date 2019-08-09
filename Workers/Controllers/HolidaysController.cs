@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Workers.Controllers
 {
     [Authorize]
-    [Route("[controller]/[action]")]
+    [Route("[controller]/[action]/{holidaysId?}")]
     public class HolidaysController : Controller
     {
         public IEFGenericRepository<Team> TeamRepository { get; set; }
@@ -53,11 +53,25 @@ namespace Workers.Controllers
         {
             Weekend weekend = new Weekend();
             weekend.Id = Guid.NewGuid();
+
             weekend.startDate = DateTime.ParseExact(newweekend.startDay, "M/d/yyyy", CultureInfo.InvariantCulture);
             weekend.EndDate = weekend.startDate.AddDays(newweekend.AddDays-1);
+            weekend.Name = newweekend.Name;
             Weekendrepository.Create(weekend);
             return Redirect("/Holidays/HolydaysView");
         }
+  
+        public IActionResult ChnageHolydays(Guid holidaysId, Holydays Updateholydays)
+        {
+            Weekend weekend = Weekendrepository.FindById(holidaysId);
+            weekend.startDate = DateTime.ParseExact(Updateholydays.startDay, "M/d/yyyy", CultureInfo.InvariantCulture);
+            weekend.EndDate = weekend.startDate.AddDays(Updateholydays.AddDays - 1);
+            weekend.Name = Updateholydays.Name;
+            Weekendrepository.Update(weekend);
+         
+            return Redirect("/Holidays/HolydaysView");
+        }
+    
         /*  [Route("/DeleteHolyDay/{holidaysId}")]*/
         [Authorize(Roles = "admin")]
         public IActionResult DeleteHolyDay(Guid holidaysId)
@@ -66,5 +80,20 @@ namespace Workers.Controllers
             Weekendrepository.Remove(weekend);
             return Redirect("/Holidays/HolydaysView");
         }
+
+        //[Route("Holidays/ChangeWeekend/{holidaysId}")]
+        [Authorize(Roles = "admin")]
+        public IActionResult ChangeWeekend(Guid holidaysId)
+        {
+            Weekend weekend = Weekendrepository.FindById(holidaysId);
+            ViewBag.holidaysId = holidaysId;
+            Holydays holydays = new Holydays();
+            holydays.Name = weekend.Name;
+            ViewBag.holidaysId = holidaysId;
+            holydays.startDay = weekend.startDate.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
+            holydays.AddDays = (weekend.EndDate-weekend.startDate).Days+1;
+            return View(holydays);
+        }
+
     }
 }

@@ -45,5 +45,7 @@
 </table>
 @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
 {
-    <a asp-action="NextYear" asp-controller="Home"><button class="btn btn-dark">Next Year</button></a>
+    @if (@ViewBag.NextYear) { 
+       <a asp-action="NextYear" asp-controller="Home"><button class="btn btn-dark">Next Year</button></a>
+    }
 }

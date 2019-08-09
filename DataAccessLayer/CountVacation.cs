@@ -33,10 +33,14 @@ namespace DataAccessLayer
         
         public int CountWeekend(DateTime StartDay, DateTime EndDay, string TeamName)
         {
+            Team team = TeamRepository.Get().FirstOrDefault(t => t.TeamName == TeamName);
+            if (team == null)
+                return 0;
             int Count = 0;
-            List<Vacation> list = Vacationrepository.Get(i => i.TeamName == TeamName).ToList(); ;
-            List<Vacation> listTwo = list.Where(i => (ChackWeekend(StartDay, EndDay, i.FirstDate, i.SecontDate, TeamName, i.TeamName))).ToList();
-            if (list == null)
+            List<Vacation> vacationsTeam = Vacationrepository.IncludeGet(p => p.People).Where(x => x.People.TeamId == team.Id).ToList();
+
+            List<Vacation> listTwo = vacationsTeam.Where(i => (ChackWeekend(StartDay, EndDay, i.FirstDate, i.SecontDate, TeamName, team.TeamName))).ToList();
+            if (vacationsTeam == null)
                 return 0;
             Count = listTwo.Count();
             return Count;
@@ -111,17 +115,18 @@ namespace DataAccessLayer
         }
         public bool CheckonBusy(Person person,DateTime FirstDate, DateTime SecondDate)
         {
-            bool check = true;
-            if (CountTeam(person.Team.TeamName) - CountWeekend(FirstDate, SecondDate, person.Team.TeamName) <=person.Team.MinNumberWorkers && person.Team.MinNumberWorkers != 0)
+  
+            if (CountTeam(person.Team.TeamName) - CountWeekend(FirstDate, SecondDate, person.Team.TeamName) <=person.Team.MinNumberWorkers )
             {
             
-                check =false;
+                return false;
             }
-            return false;
+            return true;
         }
         private int CountTeam(string TeamName)
         {
-            List<Person> list = Personrepository.Get(i => i.Team.TeamName == TeamName).ToList();
+           
+            List<Person> list = Personrepository.IncludeGet(p=>p.Team).Where(i => i.Team.TeamName == TeamName).ToList();
             return list.Count;
         }
         public int CountDaysVacation(DateTime startDate, DateTime FinishDate)

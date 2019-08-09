@@ -48,15 +48,16 @@ namespace Workers.Controllers
             newPerson.Days = person.Days;
             newPerson.Team = team;
             if(newPerson.Days>18||newPerson.Days<0)
-                Redirect("~/");
+                Redirect("~/Home/Workers/Home/Workers");
             Personrepository.Create(newPerson);
-            return Redirect("~/");
+            return Redirect("~/Home/Workers/Home/Workers");
         }
         [HttpGet]
         [Route("ChangePerson/{personId}")]
         [Authorize(Roles = "admin")]
         public IActionResult ChangePerson(Guid personId)
         {
+            ViewBag.person = Personrepository.FindById(personId);
             Person person = Personrepository.IncludeGet(p => p.Team).FirstOrDefault(p => p.Id == personId);
             ViewBag.Teams = TeamRepository.Get().ToList();
             return View(person);
@@ -74,9 +75,9 @@ namespace Workers.Controllers
             Updateperson.Days = person.Days;
             Updateperson.Team = team;
             if(Updateperson.Days<0||Updateperson.Days>20)
-                return Redirect("~/Home/Workers");
+                return Redirect("~/Home/Workers/Home/Workers");
             Personrepository.Update(Updateperson);
-            return Redirect("~/Home/Workers");
+            return Redirect("~/Home/Workers/Home/Workers");
         }
         
               [Route("DeletePerson/{personId}")]
@@ -85,7 +86,7 @@ namespace Workers.Controllers
         {
             Person person = Personrepository.FindById(personId);
             Personrepository.Remove(person);
-            return Redirect("~/Workers");
+            return Redirect("~/Home/Workers/Home/Workers");
         }
 
       

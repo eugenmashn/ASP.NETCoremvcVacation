@@ -25,9 +25,7 @@
                      </a>
                  }
                  </div>
-
-
-             <div class="col-md-2  >
+             <div class="col-md-2"  >
                  <div class=" card card-inverse card-danger">
                      @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
                      {
@@ -38,6 +36,9 @@
                          </a>
                      }
                      </div>
+             </div>
+             <div class="col-md-2">
+                 <a asp-controller="Team" asp-action="ShowvacationTeam" asp-route-TeamId="@ViewBag.TeamId"> <button class="btn btn-secondary" style="margin: 1rem;">Show vacation </button> </a>
              </div>
          </div>
     </div>

@@ -16,6 +16,7 @@ namespace Workers.Models
         public DbSet<Team> Teams { get; set; }
         public DbSet<GlobalSetting> GlobalSettings { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<HistoryAddingDays> HistoryAddDays { get; set; }
         public AuthenticationContext(DbContextOptions<AuthenticationContext> options)
               : base(options)
         {

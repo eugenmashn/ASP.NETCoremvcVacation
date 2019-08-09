@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DataAccessLayer.Models
 {
-    
+
     public class Person
     {
         public Guid Id { get; set; }
@@ -17,7 +17,7 @@ namespace DataAccessLayer.Models
 
         /*    [DataMember]
             [ForeignKey("TeamId")]*/
-        public  Team Team { get; set; }
+        public Team Team { get; set; }
         public List<Vacation> HolyDays { get; set; } = new List<Vacation>();
     }
 }

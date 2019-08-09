@@ -1,0 +1,32 @@
+﻿@model IEnumerable<DataAccessLayer.Models.Weekend>
+@{
+    ViewData["Title"] = "NextYear";
+}
+
+<h2> Change weekend</h2>
+<table class="table table-dark">
+    <thead>
+    <th scope="col">Name </th>
+    <th scope="col">Start date </th>
+    <th scope="col">Finish date </th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+
+    </thead>
+    <tbody>
+
+        @foreach (var weekend in Model)
+        {
+
+            <tr>
+                <th scope="row">@weekend.Name </th>
+                <th scope="row">@weekend.startDate.ToString("yyyy-MM-dd") </th>
+                <th scope="row">@weekend.EndDate.ToString("yyyy-MM-dd") </th>
+               <th scope="row"><a asp-controller="Holidays" asp-action="ChangeWeekend" asp-route-holidaysId="@weekend.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Change</button></a></th>
+                <th scope="row"><a asp-area="" asp-controller="Person" asp-action="DeletePerson" asp-route-holidaysId="@weekend.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
+              
+            </tr>
+        }
+    </tbody>
+</table>

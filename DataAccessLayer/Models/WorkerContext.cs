@@ -13,7 +13,7 @@ namespace DataAccessLayer.Models
         public DbSet<Team> Teams { get; set; }
         public DbSet<GlobalSetting> GlobalSettings { get; set; }
         public DbSet<User> Users { get; set; }
-
+        public DbSet<HistoryAddingDays> HistoryAddDays { get; set; }
         public WorkerContext(DbContextOptions<WorkerContext> options)
             : base(options)
         {
