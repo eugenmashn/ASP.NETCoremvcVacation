@@ -1,5 +1,8 @@
-﻿<!DOCTYPE html>
-<html>
+﻿@model IEnumerable<DataAccessLayer.Models.Vacation>
+@{
+    ViewData["Title"] = "ShowvacationTeam";
+}
+
 <head>
     <meta charset='utf-8' />
     <script src='~/fullcalendar/lib/jquery.min.js'></script>
@@ -16,7 +19,13 @@
         <script src='../lib/jquery.min.js'></script>
         <script src='../fullcalendar.min.js'></script>*@
     <script>
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+        let LastName = '';
 
+       today = mm + '/' + dd + '/' + yyyy;
         $(document).ready(function () {
 
             $('#calendar').fullCalendar({
@@ -25,117 +34,70 @@
                     center: 'title',
                     right: 'year,month,agendaWeek,agendaDay'
                 },
-                defaultDate: '2015-01-12',
+                defaultDate: today,
                 defaultView: 'year',
                 yearColumns: 3,
-                selectable: true,
-                selectHelper: true,
-                select: function (start, end) {
-                    var title = prompt('Event Title:');
-                    var eventData;
-                    if (title) {
-                        eventData = {
-                            title: title,
-                            start: start,
-                            end: end
-                        };
-                        $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-                    }
-                    $('#calendar').fullCalendar('unselect');
-                },
+               
                 firstDay: 0,
                 editable: true,
-                eventLimit: true, // allow "more" link when too many events
-                events: [
-                    {
-                        title: 'Long event',
-                        start: '2015-01-07',
-                        end: '2015-01-10'
-                    },
-                    {
-                        title: 'Background Yearview Dev',
-                        start: '2015-01-04',
-                        end: '2015-01-19',
-                        rendering: 'background'
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeating Event',
-                        start: '2015-01-09T16:00:00'
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeating Event',
-                        start: '2015-01-16T16:00:00'
-                    },
-                    {
-                        title: 'Long over months',
-                        start: '2015-01-29',
-                        end: '2015-02-02'
-                    },
-                    {
-                        title: 'All Day Event',
-                        start: '2015-03-01'
-                    },
-                    {
-                        title: 'Conference',
-                        start: '2015-11-11',
-                        end: '2015-11-13'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: '2015-11-12T10:30:00',
-                        end: '2015-11-12T12:30:00'
-                    },
-                    {
-                        title: 'Lunch',
-                        start: '2015-11-12T12:00:00'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: '2015-11-12T14:30:00'
-                    },
-                    {
-                        title: 'Happy Hour',
-                        start: '2014-11-12T17:30:00'
-                    },
-                    {
-                        title: 'Dinner',
-                        start: '2014-11-12T20:00:00'
-                    },
-                    {
-                        title: 'Birthday Party',
-                        start: '2014-11-13T07:00:00'
-                    },
-                    {
-                        title: 'Click for Google',
-                        url: 'http://google.com/',
-                        start: '2015-03-28'
-                    }
-                ]
-            });
+                slotMinutes: 60,
+
+                events:  '@Url.RouteUrl(new{ action="GetEvents", controller="Team" })'
+                       
+             });
 
         });
-
+        //$(document).ready(function() {
+        //    $('#filterbtn').click( ()=> {
+        //        LastName = $('#fiterinput').val();
+        //        alert($('#fiterinput').val());
+      
+              
+        //    });
+        //});
     </script>
     <style>
 
-        body {
-            margin: 40px 10px;
+        /*body {
+            margin: 50px 20px;
             padding: 0;
             font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
             font-size: 14px;
-        }
+        }*/
 
-        #calendar {
-            max-width: 1280px;
-            margin: 0 auto;
+        /*#calendar {
+            max-width: auto;
+            margin: 10px;
+        }*/
+        .fc-event {
+          border: 1px solid #3a87ad; /* default BORDER color */
+         color: #fff;               /* default TEXT color */
+       font-size: 2em;     
+       font-weight:bold;
+        cursor: default;
+        }
+        body
+        {
+            margin-top:50px;
+        }
+        .filterinput {
+            margin-top:3rem;
         }
     </style>
 </head>
 <body>
-
-    <div id='calendar'></div>
-   
+    <div class="container">
+        <div class="row">
+            @*<div class="col-sm-2">
+                <div class="form-group mx-sm-3 mb-2">
+                    <h4>Write name or lastname</h4>
+                    <label for="fiter" class="sr-only">filter</label>
+                    <input class="form-control" id="fiterinput">
+                </div>
+                <button type="submit" id="filterbtn" class="btn btn-primary mb-2">Fiter</button>
+            </div>*@
+            <div  id='calendar'></div>
+        </div>
+    </div>
 </body>
-</html>
+

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using DataAccessLayer.Models;
@@ -52,13 +53,34 @@ namespace Workers.Controllers
         [Route("Team/GetEvents/{TeamId}")]
         public JsonResult GetEvents(Guid TeamId)
         {
+            int vacationsCount = Vacationrepository.Get().Count();
             int i = 1;
             int numColors = 10;
+            int k = 0;
             var colors = new List<string>();
+                int integerRedValue = 8;
+                //Green Value
+                int integerGreenValue = 95;
+                //Blue Value
+                int integerBlueValue = 52;
             for (int j = 0; j < numColors; j++)
             {
-                var random = new Random(); // Don't put this here!
-                colors.Add(String.Format("#{0:X6}", random.Next(0x1000000)));
+                //var random = new Random(); // Don't put this here!
+
+
+                string hexValue ='#'+ integerRedValue.ToString("X2") + integerGreenValue.ToString("X2") + integerBlueValue.ToString("X2");
+            
+                colors.Add(hexValue);
+             
+                integerBlueValue += 24;
+                integerGreenValue += 14;
+                integerRedValue += 41;
+                if (integerBlueValue > 255)
+                    integerBlueValue = 0;
+                if (integerGreenValue > 255)
+                    integerGreenValue = 0;
+                if (integerRedValue > 255)
+                    integerRedValue = 0;
             }
             var events = new List<CalendarEventy>();
             List<Vacation> vacations = new List<Vacation>();
@@ -80,11 +102,9 @@ namespace Workers.Controllers
                     end = vacation.SecontDate;
                     events.Add(new CalendarEventy()
                     {
-                        Id = Guid.NewGuid(),
-                        title = "Vacation" + person.LastName+person.Name,
+                        title = "Vacation"+" "+ person.LastName+" "+person.Name,
                         start = start.ToString("yyyy-MM-dd"),
                         end = end.ToString("yyyy-MM-dd"),
-                        allDay = false,
                         backgroundColor = colors[i]
                     });
                     
