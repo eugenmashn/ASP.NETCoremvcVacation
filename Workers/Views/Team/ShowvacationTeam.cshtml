@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataAccessLayer.Models.Vacation>
+﻿
 @{
     ViewData["Title"] = "ShowvacationTeam";
 }
@@ -13,6 +13,7 @@
     <script src='~/fullcalendar/lib/moment.min.js'></script>
 
     <script src='~/fullcalendar/fullcalendar.min.js'></script>
+
     @*<link href='../fullcalendar.css' rel='stylesheet' />
         <link href='../fullcalendar.print.css' rel='stylesheet' media='print' />
         <script src='../lib/moment.min.js'></script>
@@ -24,10 +25,11 @@
         let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         let yyyy = today.getFullYear();
         let LastName = '';
-
+        let ArrayDAtaEventsUrl = [];
+        
        today = mm + '/' + dd + '/' + yyyy;
         $(document).ready(function () {
-
+    
             $('#calendar').fullCalendar({
                 header: {
                     left: 'prev,next today',
@@ -37,24 +39,39 @@
                 defaultDate: today,
                 defaultView: 'year',
                 yearColumns: 3,
-               
+
                 firstDay: 0,
                 editable: true,
                 slotMinutes: 60,
 
                 events:  '@Url.RouteUrl(new{ action="GetEvents", controller="Team" })'
-                       
+               
              });
 
         });
-        //$(document).ready(function() {
-        //    $('#filterbtn').click( ()=> {
-        //        LastName = $('#fiterinput').val();
-        //        alert($('#fiterinput').val());
-      
+        $(document).ready(function() {
+            $('#filterbtn').click( ()=> {
+                LastName = $('#fiterinput').val();
+                if ($('#calendar').fullCalendar('clientEvents').length > ArrayDAtaEventsUrl.length)
+                {
+                    ArrayDAtaEventsUrl = $('#calendar').fullCalendar('clientEvents');
+                }
+               
+                   $('#calendar').fullCalendar('removeEvents');
+                $('#calendar').fullCalendar('addEventSource', ArrayDAtaEventsUrl);
+                let Arrayevents = $('#calendar').fullCalendar('clientEvents', function (evt) {
+             
+                    return [evt.title.indexOf(LastName)] >= 0
+                });
+                console.log(ArrayDAtaEventsUrl);
+                console.log($('#calendar').fullCalendar('clientEvents'));
+               
               
-        //    });
-        //});
+                $('#calendar').fullCalendar('removeEvents');
+                $('#calendar').fullCalendar('addEventSource', Arrayevents);
+                
+            });
+        });
     </script>
     <style>
 
@@ -70,33 +87,36 @@
             margin: 10px;
         }*/
         .fc-event {
-          border: 1px solid #3a87ad; /* default BORDER color */
-         color: #fff;               /* default TEXT color */
-       font-size: 2em;     
-       font-weight:bold;
-        cursor: default;
+            border: 1px solid #3a87ad; /* default BORDER color */
+            color: #fff; /* default TEXT color */
+            font-size: 2em;
+            font-weight: bold;
+            cursor: default;
         }
-        body
-        {
-            margin-top:50px;
+
+        body {
+            margin-top: 50px;
         }
+
         .filterinput {
-            margin-top:3rem;
+            margin-top: 3rem;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            @*<div class="col-sm-2">
-                <div class="form-group mx-sm-3 mb-2">
-                    <h4>Write name or lastname</h4>
-                    <label for="fiter" class="sr-only">filter</label>
-                    <input class="form-control" id="fiterinput">
+    <div id="root">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <h4>Write name or lastname</h4>
+                        <label for="fiter" class="sr-only">filter</label>
+                        <input class="form-control" id="fiterinput">
+                    </div>
+                    <button type="submit" id="filterbtn" class="btn btn-primary mb-2">Fiter</button>
                 </div>
-                <button type="submit" id="filterbtn" class="btn btn-primary mb-2">Fiter</button>
-            </div>*@
-            <div  id='calendar'></div>
+                <div class="col-sm-10" id='calendar'></div>
+            </div>
         </div>
     </div>
 </body>

@@ -102,6 +102,8 @@ namespace Workers.Controllers
                     end = vacation.SecontDate;
                     events.Add(new CalendarEventy()
                     {
+                        Id=Guid.NewGuid(),
+                        allDay=true,
                         title = "Vacation"+" "+ person.LastName+" "+person.Name,
                         start = start.ToString("yyyy-MM-dd"),
                         end = end.ToString("yyyy-MM-dd"),
