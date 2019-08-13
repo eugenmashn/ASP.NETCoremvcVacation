@@ -74,7 +74,7 @@ namespace Workers.Controllers
             NewVacation.People = person;
             CountVacation countvacation = new CountVacation();
             if (!countvacation.CheckonBusy(person,NewVacation.FirstDate,NewVacation.SecontDate)) { 
-                ModelState.AddModelError("EndDay", "Date is busy");
+                ModelState.AddModelError("EndDay", "Please change date");
                 ViewBag.AddDays = person.Days;
                 List<Weekend> weekends = Weekendrepository.Get().ToList();
                 ViewBag.weekends = weekends;

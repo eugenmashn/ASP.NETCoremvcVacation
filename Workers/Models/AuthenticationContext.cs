@@ -25,6 +25,16 @@ namespace Workers.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
+            builder.Entity<Person>()
+                 .HasOne(s => s.Team)
+                 .WithMany(g => g.Workers)
+                  .OnDelete(DeleteBehavior.SetNull);
+            //    modelBuilder.Entity<Team>()
+            //        .HasMany(c => c.Workers)
+            //        .WithOne(e => e.Team);
+            //    // .WillCascadeOnDelete(false);
+            //    //modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.

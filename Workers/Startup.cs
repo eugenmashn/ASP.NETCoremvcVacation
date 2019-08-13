@@ -55,6 +55,7 @@ namespace Workers
             //       .UseSqlServer(@"Server=(localdb)\MsSqlLocalDb;Database=Workers;Trusted_Connection=True;")
             //       .Options;
             //db = new WorkerContext(optionsf);
+
             services.AddIdentity<UserAuthentication, IdentityRole>()
               .AddEntityFrameworkStores<AuthenticationContext>();
             services.AddMvc();

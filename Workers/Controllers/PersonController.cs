@@ -66,14 +66,25 @@ namespace Workers.Controllers
         [Route("ChangePerson/{personId}")]
         [Authorize(Roles = "admin")]
         public IActionResult ChangePersonPost(Person person,Guid personId)
-            
+        
         {
-            Team team = TeamRepository.FindById((Guid)person.TeamId);
+            Team team = new Team();
+            bool teamChecknull = true;
+            if(person.TeamId==null)
+                 teamChecknull=false;
+            else { 
+                 team = TeamRepository.FindById((Guid)person.TeamId);
+            }
             Person Updateperson = Personrepository.IncludeGet(p=>p.Team).FirstOrDefault(p=>p.Id==personId);
             Updateperson.Name = person.Name;
             Updateperson.LastName = person.LastName;
             Updateperson.Days = person.Days;
-            Updateperson.Team = team;
+            if (teamChecknull)
+                Updateperson.Team = null;
+            else
+            {
+                Updateperson.Team = team;
+            }
             if(Updateperson.Days<0||Updateperson.Days>20)
                 return Redirect("~/Home/Workers/Home/Workers");
             Personrepository.Update(Updateperson);
