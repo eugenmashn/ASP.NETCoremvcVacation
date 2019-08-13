@@ -79,7 +79,7 @@ namespace Workers.Controllers
             Updateperson.Name = person.Name;
             Updateperson.LastName = person.LastName;
             Updateperson.Days = person.Days;
-            if (teamChecknull)
+            if (!teamChecknull)
                 Updateperson.Team = null;
             else
             {

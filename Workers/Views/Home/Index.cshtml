@@ -4,32 +4,40 @@
     ViewData["Title"] = "Home Page";
 }
 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+    <div class="container">
 
 
-<div class="row ">
-
-
-        <div class="col-md>
-            <div ">
+        <div class="row">
+            <div>
                 <h2>Team</h2>
                 @foreach (var team in Model)
                 {
                     <li><a asp-area="" asp-controller="Team" asp-action="TeamIndex" asp-route-TeamName="@team.TeamName" asp-route-TeamId="@team.Id">@team.TeamName</a> </li>
                 }
-
-
             </div>
-            <div>
+        </div>
+        <div class="row">
+            <div class="col-md-2" >
                 @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
                 {
                     <a asp-area="" asp-controller="Home" asp-action="AddnewTeam">
 
-                        <button type="button" class="btn btn-secondary">
+                        <button type="button" class="btn btn-primary">
                             Add new Team
                         </button>
 
                     </a>
                  }
             </div>
-        </div class="col-md-3">
+            <div class="col-md-2" >
+                <a asp-area="" asp-controller="Home" asp-action="ShowVacationAll">
+                    <button class="btn btn-primary">
+                        Show Vacation
+                    </button>
+                </a>
+            </div>
+
+        </div>
     </div>

@@ -8,6 +8,8 @@ using DataAccessLayer.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Workers.Models;
 using Microsoft.AspNetCore.Authorization;
+using Workers.Models_View;
+
 namespace Workers.Controllers
 {
 
@@ -18,10 +20,12 @@ namespace Workers.Controllers
         public IEFGenericRepository<Team> TeamRepository { get; set; }
         public IEFGenericRepository<Person> PersonRepository { get; set; }
         public IEFGenericRepository<HistoryAddingDays> HistoryAddingDaysRepository { get; set; }
+        public IEFGenericRepository<Vacation> Vacationrepository { get; set; }
 
         public IEFGenericRepository<Weekend> WeekendRepository { get; set; }
-        public HomeController(IEFGenericRepository<Team> teamrepository, IEFGenericRepository<Person> personrepository,IEFGenericRepository<HistoryAddingDays>historyAddingDaysrepository,IEFGenericRepository<Weekend> wekendRepository)
+        public HomeController(IEFGenericRepository<Team> teamrepository, IEFGenericRepository<Person> personrepository,IEFGenericRepository<HistoryAddingDays>historyAddingDaysrepository,IEFGenericRepository<Weekend> wekendRepository,IEFGenericRepository<Vacation> vacationRepository)
         {
+            Vacationrepository = vacationRepository;
             TeamRepository = teamrepository;
             PersonRepository = personrepository;
             HistoryAddingDaysRepository = historyAddingDaysrepository;
@@ -146,6 +150,75 @@ namespace Workers.Controllers
              
             return View(NewWeekends);
         }
+        public IActionResult ShowVacationAll()
+        {
+            ViewBag.Team = TeamRepository.Get().ToList();
+            return View();
+        }
+        public JsonResult GetEvents()
+        {
+            int vacationsCount = Vacationrepository.Get().Count();
+            int i = 1;
+            int numColors = 10;
+            int k = 0;
+            var colors = new List<string>();
+            int integerRedValue = 8;
+            //Green Value
+            int integerGreenValue = 95;
+            //Blue Value
+            int integerBlueValue = 52;
+            for (int j = 0; j < numColors; j++)
+            {
+                //var random = new Random(); // Don't put this here!
 
+
+                string hexValue = '#' + integerRedValue.ToString("X2") + integerGreenValue.ToString("X2") + integerBlueValue.ToString("X2");
+
+                colors.Add(hexValue);
+
+                integerBlueValue += 24;
+                integerGreenValue += 14;
+                integerRedValue += 41;
+                if (integerBlueValue > 255)
+                    integerBlueValue = 0;
+                if (integerGreenValue > 255)
+                    integerGreenValue = 0;
+                if (integerRedValue > 255)
+                    integerRedValue = 0;
+            }
+            var events = new List<CalendarEventy>();
+            List<Vacation> vacations = new List<Vacation>();
+            List<Person> people = PersonRepository.IncludeGet(p=>p.Team).ToList();
+            foreach (Person person in people)
+            {
+                vacations = Vacationrepository.Get(p => p.Peopleid == person.Id).ToList();
+
+                DateTime start;
+                DateTime end;
+                var viewModel = new CalendarEventy();
+
+
+
+
+                foreach (Vacation vacation in vacations)
+                {
+                    start = vacation.FirstDate;
+                    end = vacation.SecontDate;
+                    events.Add(new CalendarEventy()
+                    {
+                        Id = Guid.NewGuid(),
+                        allDay = true,
+                        title = "Vacation" + " " + person.LastName + " " + person.Name+" "+person.Team.TeamName,
+                        start = start.ToString("yyyy-MM-dd"),
+                        end = end.ToString("yyyy-MM-dd"),
+                        backgroundColor = colors[i]
+                    });
+
+
+                }
+                i++;
+            }
+            return Json(events.ToArray());
+        }
     }
 }
