@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Workers.Models;
 using Microsoft.AspNetCore.Authorization;
 using Workers.Models_View;
-
+using System.Globalization;
+using DataAccessLayer;
 namespace Workers.Controllers
 {
 
@@ -206,7 +207,7 @@ namespace Workers.Controllers
                     end = vacation.SecontDate;
                     events.Add(new CalendarEventy()
                     {
-                        Id = Guid.NewGuid(),
+                        Id = vacation.Id,
                         allDay = true,
                         title = "Vacation" + " " + person.LastName + " " + person.Name+" "+person.Team.TeamName,
                         start = start.ToString("yyyy-MM-dd"),
@@ -219,6 +220,37 @@ namespace Workers.Controllers
                 i++;
             }
             return Json(events.ToArray());
+        }
+        public JsonResult GetWeekend()
+        {
+            List<Weekend> Weekends = WeekendRepository.Get().ToList();
+            List<DateForVacationAll> dates = new List<DateForVacationAll>();
+            foreach (Weekend weekend in Weekends)
+            {
+                for (DateTime date = weekend.startDate; date < weekend.EndDate;)
+                {
+                    dates.Add(new DateForVacationAll
+                    {
+                        Id = Guid.NewGuid(),
+                        Date = date.ToString()
+                    });
+                    date=date.AddDays(1);
+                }
+            }
+            return Json(dates.ToArray());
+        }
+        public void ChangeDateVacation([FromBody] CalendarEventy request)
+        {
+         
+            CountVacation countVacation = new CountVacation();
+            string start = request.start.Substring(0 , 10).Replace("-","/");
+            string end = request.end.Substring(0, 10).Replace("-", "/");
+            Vacation updatevacation = Vacationrepository.FindById((Guid)request.Id);
+            updatevacation.FirstDate = DateTime.ParseExact(start, "yyyy/M/d", CultureInfo.InvariantCulture);
+            updatevacation.SecontDate = DateTime.ParseExact(end, "yyyy/M/d", CultureInfo.InvariantCulture);
+           
+            Vacationrepository.Update(updatevacation);
+         
         }
     }
 }

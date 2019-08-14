@@ -37,9 +37,35 @@
         let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         let yyyy = today.getFullYear();
         let LastName = '';
+            let ArrayDateWeekend = [];
         let ArrayDAtaEventsUrl = [];
         let ArrayEventsTeanFilter = [];
-       today = mm + '/' + dd + '/' + yyyy;
+            let Check = 0;
+            today = mm + '/' + dd + '/' + yyyy;
+       //  $( document ).ready(function(){
+	      //  //$.ajax({
+       //  //               url: '/Home/GetWeekend',
+       //  //               type: "GET",
+       //  //               dataType: "json",
+       //  //               data: {},
+       //  //               contentType: 'application/json; charset=utf-8',
+       //  //               success: function (doc) {
+                        
+       //  //                   ArrayDateWeekend = doc;
+       //  //               }
+       //  //            });
+       //       $.getJSON( "/Home/GetWeekend", function( data ) {
+       //           var items = [];
+       //           $.each( data, function( Date ) {
+       //               ArrayDateWeekend.push(Date);
+       //               debugger;
+       //               Check+=1;
+       //           });
+ 
+       
+       //       });
+	      //});   
+             
         $(document).ready(function () {
 
             $('#calendar').fullCalendar({
@@ -56,11 +82,79 @@
                 editable: true,
                 slotMinutes: 60,
 
-                events:  '@Url.RouteUrl(new{ action="GetEvents", controller="Home" })'
+                events:  '@Url.RouteUrl(new{ action="GetEvents", controller="Home" })',
+                eventDrop: function (event) {
+                    $.ajax({
+                        url: '/Home/ChangeDateVacation',
+                        data: JSON.stringify(event),
+                        contentType: 'application/json',
+                        type:'POST'
+                    });
+                   console.log(event.id, event.start, event.end);
 
-             });
-
+                },
+                eventDurationEditable: false,
+                titleFormat:"MM/DD/YYYY"
+                //dayRender: function (date, cell) {
+                  
+                //    var today = moment('2019-09-11T00:00Z');
+                   
+                //     if (CheckWeekend(date)) {
+                //         cell.css("background-color", "red");
+                //     }   
+                //}
+            });
+           
+           
         });
+            function CheckWeekend(Date) {
+                //let check=
+                //AjaxCall();
+                //console.log(ArrayDateWeekend);
+                //jQuery.each(ArrayDateWeekend, function (id,date) {
+                //    console.log(moment(date));
+                //    console.log(moment(Date));
+                //    if (moment(Date).isSame(moment(date),"day")) {
+                //        return true;
+                //    }
+                //});
+                console.log(ArrayDateWeekend);
+                console.log(Check);
+                for (let i = 0; i < 2; i++) {
+                    debugger;
+                    console.log(moment(ArrayDateWeekend[i].date));
+                     console.log(moment(Date));
+                    if (moment(Date).isSame(moment(date),"day")) {
+                        return true;
+                    }
+                }
+ 
+                return false;
+            }
+            function AjaxCall() {
+                //$.getJSON( "/Home/GetWeekend", function( data ) {
+                //  var items = [];
+                //  $.each( data, function( Id, Date ) {
+                //      ArrayDateWeekend.push(Date);
+                //  });
+ 
+                // console.log(ArrayDateWeekend);
+                //});
+                                //if (ArrayDateWeekend.length == 0) {
+                    //$.ajax({
+                    //    url: '/Home/GetWeekend',
+                    //    type: "GET",
+                    //    dataType: "json",
+                    //    data: {},
+                    //    contentType: 'application/json; charset=utf-8',
+                    //    success: function (doc) {
+
+                    //        console.log(doc)
+                    //        ArrayDateWeekend = doc;
+                    //        console.log(ArrayDateWeekend+"ajax");
+                    //    }}
+                    //});
+             }  
         $(document).ready(function() {
             $('#filterbtn').click( ()=> {
                 LastName = $('#fiterinput').val();
@@ -75,8 +169,8 @@
 
                     return [evt.title.indexOf(LastName)] >= 0
                 });
-                console.log(ArrayDAtaEventsUrl);
-                console.log($('#calendar').fullCalendar('clientEvents'));
+                //console.log(ArrayDAtaEventsUrl);
+                //console.log($('#calendar').fullCalendar('clientEvents'));
 
 
                 $('#calendar').fullCalendar('removeEvents');
@@ -103,8 +197,8 @@
 
                     return [evt.title.indexOf(TeamNAme)] >= 0
                 });
-                console.log(ArrayEventsTeanFilter);
-                console.log($('#calendar').fullCalendar('clientEvents'));
+                //console.log(ArrayEventsTeanFilter);
+                //console.log($('#calendar').fullCalendar('clientEvents'));
 
 
                 $('#calendar').fullCalendar('removeEvents');
@@ -146,6 +240,8 @@
             .fc-scroller {
                 height: auto !important;
             }
+            .fc-sun { background-color:#e5334b; }
+            .fc-sat { background-color:#e5334b;  }
         </style>
     </head>
 <body>
