@@ -7,6 +7,8 @@ namespace Workers.Models_View
 {
     public class RegisterModel
     {
+        public string Firstname{ get; set; }
+        public string LastName { get;set; }
         [Required(ErrorMessage = "Write Email")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Write  password")]

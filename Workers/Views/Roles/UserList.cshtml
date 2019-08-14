@@ -17,5 +17,8 @@ model IEnumerable<CustomIdentityApp.Models.User>
                     <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-userid="@user.Id"> Roles</a>
                 </td>
             </tr>
+            <tr>
+                <a class="btn btn-sm btn-primary" asp-action="AddPerson" asp-route-userid="@user.Id"> Roles</a>
+            </tr>
         }
     </table>

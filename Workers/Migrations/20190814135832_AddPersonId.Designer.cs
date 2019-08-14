@@ -10,8 +10,8 @@ using Workers.Models;
 namespace Workers.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    [Migration("20190812152957_cascadedelete")]
-    partial class cascadedelete
+    [Migration("20190814135832_AddPersonId")]
+    partial class AddPersonId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -288,6 +288,8 @@ namespace Workers.Migrations
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
+
+                    b.Property<Guid?>("personId");
 
                     b.HasKey("Id");
 

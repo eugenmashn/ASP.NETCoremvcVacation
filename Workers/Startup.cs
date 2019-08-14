@@ -38,7 +38,8 @@ namespace Workers
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-          
+         
+            services.AddScoped<IDbInitializer, DbInitializer>();
             string connection = Configuration.GetConnectionString("DefaultConnection");
             string connectionstrIdentity = Configuration.GetConnectionString("IdentityServer");
             services.AddDbContext<WorkerContext>(options => options.UseSqlServer(connection));
@@ -65,7 +66,7 @@ namespace Workers
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDbInitializer dbInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -80,6 +81,7 @@ namespace Workers
             app.UseHttpsRedirection();
             app.UseStaticFiles();
           app.UseAuthentication();
+            dbInitializer.Initialize();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

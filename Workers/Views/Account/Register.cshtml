@@ -32,8 +32,18 @@
     <div class="validation" asp-validation-summary="ModelOnly" />
     <div>
         <div>
-            <label asp-for="Email"> Email</label><br />
+            <label asp-for="Firstname"> First name</label><br />
+            <input type="text" asp-for="Firstname" class="form-control" style="width:13em;" />
+            <span asp-validation-for="Firstname" />
+        </div>
+        <div>
+            <label asp-for="LastName"> Last Name</label><br />
             <input type="text" asp-for="Email" class="form-control" style="width:13em;" />
+            <span asp-validation-for="Email" />
+        </div>
+        <div>
+            <label asp-for="Email"> Email</label><br />
+            <input type="text" asp-for="LastName" class="form-control" style="width:13em;" />
             <span asp-validation-for="Email" />
         </div>
         <div>

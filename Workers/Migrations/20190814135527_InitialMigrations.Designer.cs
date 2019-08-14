@@ -10,8 +10,8 @@ using Workers.Models;
 namespace Workers.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    [Migration("20190812152826_Init")]
-    partial class Init
+    [Migration("20190814135527_InitialMigrations")]
+    partial class InitialMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -289,6 +289,8 @@ namespace Workers.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
+                    b.Property<Guid?>("personId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -306,7 +308,8 @@ namespace Workers.Migrations
                 {
                     b.HasOne("DataAccessLayer.Models.Team", "Team")
                         .WithMany("Workers")
-                        .HasForeignKey("TeamId");
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Vacation", b =>

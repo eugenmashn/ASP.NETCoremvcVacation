@@ -39,7 +39,7 @@ namespace Workers.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserAuthentication userAuthentication = new UserAuthentication { Email = model.Email, UserName = model.Email };
+                UserAuthentication userAuthentication = new UserAuthentication { Email = model.Email, UserName = model.Email,FirstName=model.Firstname,LastName=model.LastName };
 
                 var result = await _userManager.CreateAsync(userAuthentication, model.Password);
                 if (result.Succeeded)

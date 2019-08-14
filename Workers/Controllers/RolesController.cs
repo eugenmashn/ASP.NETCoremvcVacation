@@ -106,5 +106,10 @@ namespace Workers.Controllers
 
             return NotFound();
         }
+        public async Task<IActionResult> AddPerson(string userId)
+        {
+            UserAuthentication userAuthentication = await _userManager.FindByIdAsync(userId);
+            return View(userAuthentication);
+        }
     }
 }
