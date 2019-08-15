@@ -16,9 +16,11 @@ model IEnumerable<CustomIdentityApp.Models.User>
             <td>
                 <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-userid="@user.Id"> Roles</a>
             </td>
+            @if (user.personId == null) { 
             <td>
                 <a class="btn btn-sm btn-primary" asp-action="AddPerson" asp-route-userid="@user.Id"> Add employee</a>
             </td>
+            }
         </tr>
         }
     </table>
