@@ -41,7 +41,7 @@
 
                     <li><a asp-area="" asp-controller="" asp-action="">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Workers">Workers</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    @*<li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
                     <li><a asp-area="" asp-controller="Holidays" asp-action="HolydaysView">Holydays</a></li>
                     @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
                     {
