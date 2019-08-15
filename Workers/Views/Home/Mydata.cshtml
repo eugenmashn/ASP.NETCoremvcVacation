@@ -3,7 +3,7 @@
    ViewData["Title"] = "Mydata";
 }*@
 
-<h2>Mydata</h2>
+<h2>My data</h2>
 <table class="table table-dark">
     <thead>
     <th scope="col">Name </th>
@@ -29,7 +29,6 @@
             else
             {
                 <th scope="row"> @Model.Team.TeamName </th>
-
             }
             <th scope="row"><a asp-area="" asp-controller="Vacation" asp-action="ShowVacation" asp-route-personId="@Model.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Vacation</button></a></th>
    

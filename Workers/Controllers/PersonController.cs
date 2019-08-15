@@ -54,7 +54,7 @@ namespace Workers.Controllers
         }
         [HttpGet]
         [Route("ChangePerson/{personId}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin,employee")]
         public IActionResult ChangePerson(Guid personId)
         {
             ViewBag.person = Personrepository.FindById(personId);
@@ -64,7 +64,7 @@ namespace Workers.Controllers
         }
         [HttpPost]
         [Route("ChangePerson/{personId}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin,employee")]
         public IActionResult ChangePersonPost(Person person,Guid personId)
         
         {
