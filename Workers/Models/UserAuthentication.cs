@@ -11,6 +11,6 @@ namespace Workers.Models
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public Guid? personId { get; set; }
-        Person person { get; set; }
+        public Person person { get; set; }
     }
 }

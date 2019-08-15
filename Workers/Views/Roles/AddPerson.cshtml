@@ -1,0 +1,38 @@
+﻿@Model  Workers.Models.UserAuthentication;
+@{
+    ViewData["Title"] = "AddPerson";
+}
+<script src='~/fullcalendar/lib/jquery.min.js'></script>
+
+<link href='~/fullcalendar/fullcalendar.min.css' rel='stylesheet' />
+<link href='~/fullcalendar/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+
+<script src="~/NiceSelect/js/jquery.nice-select.min.js"></script>
+<script src="~/NiceSelect/js/fastclick.js"></script>
+<script src="~/NiceSelect/js/prism.js"></script>
+
+<link rel="stylesheet" href="path/to/nice-select.css">
+<link rel="stylesheet" href="~/NiceSelect/css/nice-select.css">
+
+<script>
+    $(document).ready(function () {
+        $('select').niceSelect();
+    });
+</script>
+<h2>AddPerson</h2>
+@using (Html.BeginForm("AddPersons", "Roles", FormMethod.Post))
+{
+    <div class="row ">
+        <label for="filter">Person:</label>
+        <select class="wide" name="personId"data-tableId="table1" id="filterTeam">
+            <option value="" class="dropdown-item"></option>
+            @foreach (var person in ViewBag.People)
+            {
+                <option value="@person.Id.ToString()+/+@Model.Id.ToString()" class="dropdown-item">@person.Name @person.LastName</option>
+
+            }
+        </select>
+
+    </div>
+    <button type="submit" class=" btn btn-primary btn-lg btn-block">Save </button>
+}

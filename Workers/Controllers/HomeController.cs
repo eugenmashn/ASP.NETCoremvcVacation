@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using Workers.Models_View;
 using System.Globalization;
 using DataAccessLayer;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 namespace Workers.Controllers
 {
 
@@ -22,10 +24,13 @@ namespace Workers.Controllers
         public IEFGenericRepository<Person> PersonRepository { get; set; }
         public IEFGenericRepository<HistoryAddingDays> HistoryAddingDaysRepository { get; set; }
         public IEFGenericRepository<Vacation> Vacationrepository { get; set; }
-
+        private readonly UserManager<UserAuthentication> _userManager;
+        private readonly SignInManager<UserAuthentication> _signInManager;
         public IEFGenericRepository<Weekend> WeekendRepository { get; set; }
-        public HomeController(IEFGenericRepository<Team> teamrepository, IEFGenericRepository<Person> personrepository,IEFGenericRepository<HistoryAddingDays>historyAddingDaysrepository,IEFGenericRepository<Weekend> wekendRepository,IEFGenericRepository<Vacation> vacationRepository)
+        public HomeController(UserManager<UserAuthentication> userManager, SignInManager<UserAuthentication> signInManager,IEFGenericRepository<Team> teamrepository, IEFGenericRepository<Person> personrepository,IEFGenericRepository<HistoryAddingDays>historyAddingDaysrepository,IEFGenericRepository<Weekend> wekendRepository,IEFGenericRepository<Vacation> vacationRepository)
         {
+            _userManager = userManager;
+            _signInManager = signInManager;
             Vacationrepository = vacationRepository;
             TeamRepository = teamrepository;
             PersonRepository = personrepository;
@@ -212,7 +217,8 @@ namespace Workers.Controllers
                         title = "Vacation" + " " + person.LastName + " " + person.Name+" "+person.Team.TeamName,
                         start = start.ToString("yyyy-MM-dd"),
                         end = end.ToString("yyyy-MM-dd"),
-                        backgroundColor = colors[i]
+
+                        backgroundColor = vacation.ConfirmedVacation? colors[i]:"red"
                     });
 
 
@@ -251,6 +257,33 @@ namespace Workers.Controllers
            
             Vacationrepository.Update(updatevacation);
          
+        }
+        public async Task<IActionResult> Mydata()
+        {
+            UserAuthentication userAuthentication = await _userManager.GetUserAsync(HttpContext.User);
+            Guid personId =(Guid) userAuthentication.personId;
+            Person person = PersonRepository.FindById(personId);
+            return View(person);
+        }
+        public IActionResult NewVacation()
+        {
+            List<NewVacationAdmin> newVacations = new List<NewVacationAdmin>();
+            List<Vacation> vacations = Vacationrepository.IncludeGet(p => p.People).Where(x => x.ConfirmedVacation == false).ToList();
+            foreach (Vacation vacation in vacations)
+            {
+                newVacations.Add(new NewVacationAdmin
+                {
+                    Id=vacation.Id,
+                    StartDate=vacation.FirstDate,
+                    FinishDate=vacation.SecontDate,
+                    Days=vacation.Days,
+                    FirstName=vacation.People.Name,
+                    LastName=vacation.People.LastName,
+                    PersonId=vacation.People.Id
+                }
+                );
+            }
+            return View(newVacations);
         }
     }
 }

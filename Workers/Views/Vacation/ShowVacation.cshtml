@@ -33,22 +33,37 @@
 
             @foreach (var vacation in Model)
             {
+                @if (!vacation.ConfirmedVacation)
+                {
 
-                <tr>
-                    <th scope="row">@vacation.FirstDate.ToString("yyyy-MM-dd") </th>
-                    <th scope="row">@vacation.SecontDate.ToString("yyyy-MM-dd") </th>
-                    <th scope="row">@vacation.Days </th>
-                    @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
-                    {
-                        <th scope="row"><a asp-area="" asp-controller="Vacation" asp-action="DeleteVacation" asp-route-vacationID="@vacation.Id" asp-route-personId="@vacation.People.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
-                    }
-                </tr>
+                    <tr style="background-color:red">
+                        <th scope="row">@vacation.FirstDate.ToString("yyyy-MM-dd") </th>
+                        <th scope="row">@vacation.SecontDate.ToString("yyyy-MM-dd") </th>
+                        <th scope="row">@vacation.Days </th>
+                        @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
+                        {
+                            <th scope="row"><a asp-area="" asp-controller="Vacation" asp-action="DeleteVacation" asp-route-vacationID="@vacation.Id" asp-route-personId="@vacation.People.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
+                        }
+                    </tr>
+                }
+                else
+                {
+                    <tr style="background-color:green">
+                        <th scope="row">@vacation.FirstDate.ToString("yyyy-MM-dd") </th>
+                        <th scope="row">@vacation.SecontDate.ToString("yyyy-MM-dd") </th>
+                        <th scope="row">@vacation.Days </th>
+                        @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
+                        {
+                            <th scope="row"><a asp-area="" asp-controller="Vacation" asp-action="DeleteVacation" asp-route-vacationID="@vacation.Id" asp-route-personId="@vacation.People.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
+                        }
+                    </tr>
+                }
             }
         </tbody>
     </table>
 </div>
 <div class="row">
-    @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
+    @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin"||@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "employee")
     {
         <div class="col-md-2">
             <a asp-area="" asp-controller="Vacation" asp-action="AddnewVacation" asp-route-personId="@ViewBag.PersonId"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Add new vacation</button></a>

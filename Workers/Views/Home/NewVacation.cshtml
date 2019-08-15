@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Workers.Models_View.NewVacationAdmin>
+@{
+    ViewData["Title"] = "NewVacation";
+}
+
+<h2>NewVacation</h2>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="js/daypilot-all.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <link type="text/css" rel="stylesheet" href="themes/month_white.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
+</head>
+
+<div class="row">
+    <table class="table table-dark">
+        <thead>
+        <th scope="col">Start Date </th>
+        <th scope="col">Finish Date </th>
+        <th scope="col">Days </th>
+        <th scope="col">First Name </th>
+        <th scope="col">Last Name </th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+
+
+
+        </thead>
+        <tbody>
+
+            @foreach (var vacation in Model)
+            {
+
+            <tr>
+                <th scope="row">@vacation.FirstName</th>
+                <th scope="row">@vacation.LastName</th>
+                <th scope="row">@vacation.StartDate.ToString("yyyy-MM-dd") </th>
+                <th scope="row">@vacation.FinishDate.ToString("yyyy-MM-dd") </th>
+                <th scope="row">@vacation.Days </th>
+
+
+                @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
+                {
+                    <th scope="row"><a asp-area="" asp-controller="Vacation" asp-action="DeleteVacation" asp-route-vacationID="@vacation.Id" asp-route-personId="@vacation.PersonId"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
+                    <th scope="row">
+                        <div class="col-md-2">
+                            <a asp-area="" asp-controller="Vacation" asp-action="Confirm"  asp-route-vacationID="@vacation.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Confirm</button></a>
+                        </div>
+                    </th>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="row">
+   
+ 
+</div>

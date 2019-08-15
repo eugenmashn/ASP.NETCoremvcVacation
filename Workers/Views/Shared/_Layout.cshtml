@@ -45,8 +45,14 @@
                     <li><a asp-area="" asp-controller="Holidays" asp-action="HolydaysView">Holydays</a></li>
                     @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
                     {
-                        <li><a asp-area="" asp-controller="Roles" asp-action="Index">Change roles</a></li> 
+                        <li><a asp-area="" asp-controller="Roles" asp-action="Index">Change roles</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="NewVacation">New vacations</a></li>
                     }
+                    @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "employee")
+                    {
+                        <li><a asp-area="" asp-action="Mydata" asp-controller="Home">My data</a></li>
+                    }
+             
                     @if (User.Identity.IsAuthenticated)
                     {
 

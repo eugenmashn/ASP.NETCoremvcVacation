@@ -14,5 +14,6 @@ namespace DataAccessLayer.Models
         public string TeamName { get; set; }
         public bool IndexDate { get; set; }
         public Guid Peopleid { get; set; }
+        public bool ConfirmedVacation { get; set; }
     }
 }

@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Workers.ModelsView;
 using Workers.Models;
 using Microsoft.AspNetCore.Authorization;
-
+using DataAccessLayer.Repository;
+using DataAccessLayer.Models;
+using System.Text.RegularExpressions;
 namespace Workers.Controllers
 {
     [Route("[controller]/[action]")]
@@ -17,8 +19,10 @@ namespace Workers.Controllers
     {
         RoleManager<IdentityRole> _roleManager;
         UserManager<UserAuthentication> _userManager;
-        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<UserAuthentication> userManager)
+        public IEFGenericRepository<Person> PersonRepository { get; set; }
+        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<UserAuthentication> userManager, IEFGenericRepository<Person> personreposito)
         {
+            PersonRepository = personreposito;
             _roleManager = roleManager;
             _userManager = userManager;
         }
@@ -106,10 +110,35 @@ namespace Workers.Controllers
 
             return NotFound();
         }
+  
         public async Task<IActionResult> AddPerson(string userId)
-        {
+        {       
+            ViewBag.People = PersonRepository.Get().ToList(); 
             UserAuthentication userAuthentication = await _userManager.FindByIdAsync(userId);
             return View(userAuthentication);
         }
+
+       [HttpPost]
+        public async Task<IActionResult> AddPersons(string personId)
+        {
+            string[] employeeId =Splitstr( personId, "+/+");
+            Person person = PersonRepository.FindById(Guid.Parse(employeeId[0]));
+            UserAuthentication userAuthentication = await _userManager.FindByIdAsync(employeeId[1]);
+            userAuthentication.personId = person.Id;
+
+            var userRoles = await _userManager.GetRolesAsync(userAuthentication);
+            // получаем все роли
+
+            var AddRoles= userRoles;
+            AddRoles.Add("employee");
+            await _userManager.AddToRoleAsync(userAuthentication, "employee");
+          
+            return RedirectToAction("UserList");
+        }
+       public  string[] Splitstr( string str, string splitter)
+        {
+            return str.Split(new[] { splitter }, StringSplitOptions.None);
+        }
     }
+    
 }

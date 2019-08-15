@@ -20,26 +20,26 @@
         @foreach (var person in Model)
         {
 
-            <tr>
-                <th scope="row">@person.Name </th>
-                <th scope="row">@person.LastName </th>
-                <th scope="row">@person.Days </th>
-                @if (person.Team == null)
-                {
-                    <th scope="row"> </th>
-                }
-                else
-                {
-                    <th scope="row"> @person.Team.TeamName </th>
+        <tr>
+            <th scope="row">@person.Name </th>
+            <th scope="row">@person.LastName </th>
+            <th scope="row">@person.Days </th>
+            @if (person.Team == null)
+            {
+                <th scope="row"> </th>
+            }
+            else
+            {
+                <th scope="row"> @person.Team.TeamName </th>
 
-                }
+            } @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
+            {
                 <th scope="row"><a asp-area="" asp-controller="Vacation" asp-action="ShowVacation" asp-route-personId="@person.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Vacation</button></a></th>
-                @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "admin")
-                {
-                    <th scope="row"><a asp-area="Person" asp-controller="Person" asp-action="ChangePerson" asp-route-personId="@person.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Change</button></a></th>
-                    <th scope="row"><a asp-area="Person" asp-controller="Person" asp-action="DeletePerson" asp-route-personId="@person.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
-                }
-            </tr>
+
+                <th scope="row"><a asp-area="Person" asp-controller="Person" asp-action="ChangePerson" asp-route-personId="@person.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Change</button></a></th>
+                <th scope="row"><a asp-area="Person" asp-controller="Person" asp-action="DeletePerson" asp-route-personId="@person.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
+            }
+        </tr>
         }
     </tbody>
 </table>

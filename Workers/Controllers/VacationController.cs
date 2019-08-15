@@ -41,7 +41,7 @@ namespace Workers.Controllers
             return View(vacations);
         }
         /*      [Route("/AddnewVacation/{personId}")]*/
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, employee")]
         [HttpGet]
         public IActionResult AddnewVacation(Guid personId)
         {
@@ -54,7 +54,7 @@ namespace Workers.Controllers
             return View();
         }
         /*        [Route("/CreateNewVacation/{personId}")]*/
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin,employee")]
         [HttpPost]
         public IActionResult AddnewVacation(Guid personId,VacationView vacation)
         {
@@ -94,7 +94,7 @@ namespace Workers.Controllers
             return Redirect("/Home/Workers/Home/Workers");
         }
            [Route("/Delete/{vacationId}/{personId}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, employee")]
         public IActionResult DeleteVacation(Guid vacationId,Guid personId)
         {
             Vacation vacation = Vacationrepository.FindById(vacationId);
@@ -144,6 +144,13 @@ namespace Workers.Controllers
 
 
             return Json(events.ToArray());
+        }
+        public IActionResult Confirm(Guid vacationId)
+        {
+            Vacation vacation = Vacationrepository.FindById(vacationId);
+            vacation.ConfirmedVacation = true;
+            Vacationrepository.Update(vacation);
+            return Redirect("/Home/NewVacation");
         }
     }
 }

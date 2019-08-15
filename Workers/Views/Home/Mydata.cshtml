@@ -1,0 +1,43 @@
+﻿@*@model DataAccessLayer.Models.Person
+{
+   ViewData["Title"] = "Mydata";
+}*@
+
+<h2>Mydata</h2>
+<table class="table table-dark">
+    <thead>
+    <th scope="col">Name </th>
+    <th scope="col">Surname </th>
+    <th scope="col">Days </th>
+    <th scope="col">Team </th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+
+    </thead>
+    <tbody>
+
+
+        <tr>
+            <th scope="row">@Model.Name </th>
+            <th scope="row">@Model.LastName </th>
+            <th scope="row">@Model.Days </th>
+            @if (Model.Team == null)
+            {
+                <th scope="row"> </th>
+            }
+            else
+            {
+                <th scope="row"> @Model.Team.TeamName </th>
+
+            }
+            <th scope="row"><a asp-area="" asp-controller="Vacation" asp-action="ShowVacation" asp-route-personId="@Model.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Vacation</button></a></th>
+   
+            
+                <th scope="row"><a asp-area="Person" asp-controller="Person" asp-action="ChangePerson" asp-route-personId="@Model.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Change</button></a></th>
+                @*<th scope="row"><a asp-area="Person" asp-controller="Person" asp-action="DeletePerson" asp-route-personId="@Model.Id"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>*@
+            
+        </tr>
+
+    </tbody>
+</table>
