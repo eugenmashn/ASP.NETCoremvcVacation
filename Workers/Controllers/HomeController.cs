@@ -158,6 +158,11 @@ namespace Workers.Controllers
         }
         public IActionResult ShowVacationAll()
         {
+           
+          
+          
+            ViewBag.People = PersonRepository.IncludeGet(p => p.HolyDays).Where(p=>p.HolyDays.Count>0).ToList();
+          
             ViewBag.Team = TeamRepository.Get().ToList();
             return View();
         }

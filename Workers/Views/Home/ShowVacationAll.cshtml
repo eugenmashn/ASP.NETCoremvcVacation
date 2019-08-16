@@ -38,7 +38,9 @@
         let yyyy = today.getFullYear();
         let LastName = '';
             let ArrayDateWeekend = [];
-        let ArrayDAtaEventsUrl = [];
+            let ArrayNameFiter = [];
+            let ArrayDAtaEventsUrl = [];
+
         let ArrayEventsTeanFilter = [];
             let Check = 0;
             today = mm + '/' + dd + '/' + yyyy;
@@ -206,7 +208,149 @@
 
                 });
            });  
-                  
+           $(function() {
+        // ID selector on Master Checkbox
+        var masterCheck = $("#masterCheck");
+        // ID selector on Items Container
+        var listCheckItems = $("#list-wrapper :checkbox");
+       
+        // Click Event on Master Check
+        masterCheck.on("click", function() {
+          var isMasterChecked = $(this).is(":checked");
+          listCheckItems.prop("checked", isMasterChecked);
+          getSelectedItems();
+        });
+ 
+        // Change Event on each item checkbox
+        listCheckItems.on("change", function() {
+          // Total Checkboxes in list
+          var totalItems = listCheckItems.length;
+          // Total Checked Checkboxes in list
+          var checkedItems = listCheckItems.filter(":checked").length;
+ 
+          //If all are checked
+          if (totalItems == checkedItems) {
+            masterCheck.prop("indeterminate", false);
+            masterCheck.prop("checked", true);
+          }
+          // Not all but only some are checked
+          else if (checkedItems > 0 && checkedItems < totalItems) {
+            masterCheck.prop("indeterminate", true);
+          }
+          //If none is checked
+          else {
+            masterCheck.prop("indeterminate", false);
+            masterCheck.prop("checked", false);
+            }
+            debugger;
+          getSelectedItems();
+        });
+ 
+               function getSelectedItems() {
+ 
+            if ($('#calendar').fullCalendar('clientEvents').length > ArrayEventsTeanFilter.length)
+                   {
+                        ArrayEventsTeanFilter = $('#calendar').fullCalendar('clientEvents');
+                   } 
+           
+            $('#calendar').fullCalendar('removeEvents');
+                   $('#calendar').fullCalendar('addEventSource', ArrayEventsTeanFilter);
+            let Arrayevents = [];
+          let getCheckedValues = [];
+          getCheckedValues = [];
+                   listCheckItems.filter(":checked").each(function () {
+                    
+                       let TeamNAme = $(this).val();
+                    
+                       getCheckedValues.push($(this).val());
+                       Arrayevents = Arrayevents.concat($('#calendar').fullCalendar('clientEvents', function (evt) {
+                      
+                    return [evt.title.indexOf(TeamNAme)] >= 0
+                       }));
+                     
+                   });
+      
+               $('#calendar').fullCalendar('removeEvents');
+                $('#calendar').fullCalendar('addEventSource', Arrayevents);
+       
+               }
+        $(document).ready( $(function() {
+        // ID selector on Master Checkbox
+        var masterCheck = $("#CheckName");
+        // ID selector on Items Container
+        var listCheckItems = $("#list-Names :checkbox");
+ 
+        // Click Event on Master Check
+        masterCheck.on("click", function() {
+          var isMasterChecked = $(this).is(":checked");
+          listCheckItems.prop("checked", isMasterChecked);
+          getSelectedItems();
+        });
+ 
+        // Change Event on each item checkbox
+        listCheckItems.on("change", function() {
+          // Total Checkboxes in list
+          var totalItems = listCheckItems.length;
+          // Total Checked Checkboxes in list
+          var checkedItems = listCheckItems.filter(":checked").length;
+ 
+          //If all are checked
+          if (totalItems == checkedItems) {
+            masterCheck.prop("indeterminate", false);
+            masterCheck.prop("checked", true);
+          }
+          // Not all but only some are checked
+          else if (checkedItems > 0 && checkedItems < totalItems) {
+            masterCheck.prop("indeterminate", true);
+          }
+          //If none is checked
+          else {
+            masterCheck.prop("indeterminate", false);
+            masterCheck.prop("checked", false);
+          }
+          getSelectedItems();
+        });
+                   debugger;
+
+                   console.log($('#calendar').fullCalendar('clientEvents'));
+                   console.log($('#calendar').fullCalendar('clientEvents').length);
+          if ($('#calendar').fullCalendar('clientEvents').length > ArrayNameFiter.length)
+          {
+              debugger;
+                        ArrayNameFiter = $('#calendar').fullCalendar('clientEvents');
+                   } 
+             $('#calendar').fullCalendar('removeEvents');
+                   $('#calendar').fullCalendar('addEventSource', ArrayNameFiter);
+
+                   console.log(ArrayNameFiter);
+        function getSelectedItems() {
+          var getCheckedValues = [];
+          getCheckedValues = [];
+            listCheckItems.filter(":checked").each(function () {
+                let Arrayevents = [];
+          let getCheckedValues = [];
+          getCheckedValues = [];
+                   listCheckItems.filter(":checked").each(function () {
+               
+                       let TeamNAme = $(this).val();
+                         console.log(TeamNAme)
+                       getCheckedValues.push($(this).val());
+                       Arrayevents = Arrayevents.concat($('#calendar').fullCalendar('clientEvents', function (evt) {
+                      
+                    return [evt.title.indexOf(TeamNAme)] >= 0
+                       }));
+                     
+                   });
+      
+               $('#calendar').fullCalendar('removeEvents');
+                $('#calendar').fullCalendar('addEventSource', Arrayevents);
+            getCheckedValues.push($(this).val());
+          });
+          $("#selected-values").html(JSON.stringify(getCheckedValues));
+               }
+           }));
+        });  
+            
         </script>
         <style>
 
@@ -251,28 +395,83 @@
             <div class="row">
                 <div class="col-sm-2">
                     <div class="row">
-                        <div class="form-group mx-sm-3 mb-2">
-                            <h4>Write name or lastname</h4>
-                            <label for="fiter" class="sr-only">filter</label>
-                            <input class="form-control" id="fiterinput">
-                        </div>
-                        <button type="submit" id="filterbtn" class="btn btn-primary mb-2">Fiter</button>
-                    </div>
-                    <div class="row " >
-                        <label for="filter" >Team:</label>
-                        <select class="wide" data-tableId="table1" id="filterTeam">
-                            <option value=""class="dropdown-item"></option>
-                            @foreach (var team in  ViewBag.Team)
-                            {
-                                <option value="@team.TeamName"class="dropdown-item" >@team.TeamName</option>
-                          
-                            }
-                        </select>
+                        <div class="card">
+                            <div class="card-header">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               value="selectAll"
+                                               id="CheckName" />
+                                        <label class="form-check-label" for="CheckName">
+                                            Select / Unselect All
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
 
-                    </div>.
+                                <ul class="list-group list-group-flush" id="list-Names">
+                                    @foreach (var person in ViewBag.People)
+                                    {
+                                        <li class="list-group-item">
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   value=" @person.LastName @person.Name"
+                                                   id="item@team.Id" />
+                                            <label class="form-check-label" for="item@team.Id">
+                                                @person.Name @person.LastName
+                                            </label>
+                                        </li>
+                                    }
+                                    <li class="list-group-item" id="selected-values"></li>
+                                </ul>
+                            </div>
+                         </div>
+
+                     </div>
+                    <div class="row ">
+
+
+                        <div class="card">
+                            <div class="card-header">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               value="selectAll"
+                                               id="masterCheck" />
+                                        <label class="form-check-label" for="masterCheck">
+                                            Select / Unselect All
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+
+                                <ul class="list-group list-group-flush" id="list-wrapper">
+                                    @foreach (var team in ViewBag.Team)
+                                    {
+                                        <li class="list-group-item">
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   value="@team.TeamName"
+                                                   id="item@team.Id" />
+                                            <label class="form-check-label" for="item@team.Id">
+                                                @team.TeamName
+                                            </label>
+                                        </li>
+                                    }
+                                   
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
+
                 <div class="col-sm-10" id='calendar'></div>
-            </div>
+          
         </div>
     </div>
 
