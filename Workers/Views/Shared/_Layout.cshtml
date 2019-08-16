@@ -48,7 +48,7 @@
                     {
                         <li><a asp-area="" asp-controller="Roles" asp-action="Index">Change roles</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="NewVacation">New vacations</a></li>
-                    }employee
+                    }
                     @if (User.IsInRole("employee"))
                     {
                         <li><a asp-area="" asp-action="Mydata" asp-controller="Home">My data</a></li>
@@ -64,7 +64,7 @@
                         </li>
                         <li>
                             <h5 style="color:azure;margin-left:2em; margin-top:17px; ">@User.Identity.Name</h5>
-                        </li>
+                       </li>
                     }
                 </ul>
             </div>

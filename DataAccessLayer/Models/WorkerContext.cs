@@ -17,7 +17,7 @@ namespace DataAccessLayer.Models
         public WorkerContext(DbContextOptions<WorkerContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+           
         }
          
         public WorkerContext()

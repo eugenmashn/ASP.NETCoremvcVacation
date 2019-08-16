@@ -20,7 +20,7 @@ namespace Workers.Models
         public AuthenticationContext(DbContextOptions<AuthenticationContext> options)
               : base(options)
         {
-            Database.EnsureCreated();
+         
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
