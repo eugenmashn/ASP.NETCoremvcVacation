@@ -158,11 +158,23 @@ namespace Workers.Controllers
         }
         public IActionResult ShowVacationAll()
         {
-           
+
+            List<PersonView> personViews = new List<PersonView>();
           
-          
-            ViewBag.People = PersonRepository.IncludeGet(p => p.HolyDays).Where(p=>p.HolyDays.Count>0).ToList();
-          
+            List<Person> people= PersonRepository.IncludeGet(p => p.HolyDays).Where(p => p.HolyDays.Count > 0).ToList();
+            foreach (Person person in people)
+            {
+                personViews.Add(new PersonView
+                {
+                    PersonId = person.Id,
+                    Name = person.Name,
+                    LastName = person.LastName,
+                    TeamName = PersonRepository.IncludeGet(p => p.Team).FirstOrDefault(x => x.Team.Id == person.TeamId).Team.TeamName
+                });
+            }
+            ViewBag.People = personViews;
+
+
             ViewBag.Team = TeamRepository.Get().ToList();
             return View();
         }
