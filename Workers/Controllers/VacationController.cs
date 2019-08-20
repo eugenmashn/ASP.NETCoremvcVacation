@@ -25,12 +25,14 @@ namespace Workers.Controllers
         public IEFGenericRepository<Weekend> Weekendrepository { get; set; }
 
         public IEFGenericRepository<Vacation> Vacationrepository { get; set; }
-        public VacationController(IEFGenericRepository<Person> personrepository, IEFGenericRepository<Team> teamrepository, IEFGenericRepository<Weekend> weekendpository, IEFGenericRepository<Vacation> vacationrepository)
+        public CountVacation CountVacation { get; set; }
+        public VacationController(IEFGenericRepository<Person> personrepository, IEFGenericRepository<Team> teamrepository, IEFGenericRepository<Weekend> weekendpository, IEFGenericRepository<Vacation> vacationrepository,CountVacation countVacation)
         {
             Personrepository = personrepository;
             Teamrepository = teamrepository;
             Weekendrepository = weekendpository;
             Vacationrepository = vacationrepository;
+            CountVacation = countVacation;
         }
         /*      [Route("/ShowVacation/{personId}") ]*/
         public IActionResult ShowVacation(Guid personId)
@@ -62,18 +64,18 @@ namespace Workers.Controllers
             Person person = Personrepository.IncludeGet(p => p.Team).FirstOrDefault(x => x.Id == personId);
             if (person == null)
                 return View();
-            CountVacation countVacation = new CountVacation();
+          
             Vacation NewVacation = new Vacation();
-            if (NewVacation.FirstDate>NewVacation.SecontDate|| countVacation.CountDaysVacation(NewVacation.FirstDate, NewVacation.SecontDate)>person.Days||NewVacation.SecontDate==null||NewVacation.FirstDate==null)
+            if (NewVacation.FirstDate>NewVacation.SecontDate|| CountVacation.CountDaysVacation(NewVacation.FirstDate, NewVacation.SecontDate)>person.Days||NewVacation.SecontDate==null||NewVacation.FirstDate==null)
                    return Redirect("/Home/Workers/Home/Workers");
             NewVacation.Id = Guid.NewGuid();
             NewVacation.FirstDate = DateTime.ParseExact(vacation.startDay, "M/d/yyyy", CultureInfo.InvariantCulture); 
             NewVacation.SecontDate = DateTime.ParseExact(vacation.EndDay, "M/d/yyyy", CultureInfo.InvariantCulture);
        
-            NewVacation.Days = countVacation.CountDaysVacation(NewVacation.FirstDate, NewVacation.SecontDate);
+            NewVacation.Days = CountVacation.CountDaysVacation(NewVacation.FirstDate, NewVacation.SecontDate);
             NewVacation.People = person;
-            CountVacation countvacation = new CountVacation();
-            if (!countvacation.CheckonBusy(person,NewVacation.FirstDate,NewVacation.SecontDate)) { 
+            
+            if (!CountVacation.CheckonBusy(person,NewVacation.FirstDate,NewVacation.SecontDate)) { 
                 ModelState.AddModelError("EndDay", "Please change date");
                 ViewBag.AddDays = person.Days;
                 List<Weekend> weekends = Weekendrepository.Get().ToList();
@@ -88,7 +90,7 @@ namespace Workers.Controllers
             /* if (person.Days<= NewVacation.Days)
                  return Redirect("/Workers"); */
            
-            person.Days -= countVacation.CountDaysVacation(NewVacation.FirstDate,NewVacation.SecontDate);
+            person.Days -= CountVacation.CountDaysVacation(NewVacation.FirstDate,NewVacation.SecontDate);
      
             Vacationrepository.Create(NewVacation);
             return Redirect("/Home/Workers/Home/Workers");

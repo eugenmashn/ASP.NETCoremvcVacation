@@ -27,8 +27,10 @@ namespace Workers.Controllers
         private readonly UserManager<UserAuthentication> _userManager;
         private readonly SignInManager<UserAuthentication> _signInManager;
         public IEFGenericRepository<Weekend> WeekendRepository { get; set; }
-        public HomeController(UserManager<UserAuthentication> userManager, SignInManager<UserAuthentication> signInManager,IEFGenericRepository<Team> teamrepository, IEFGenericRepository<Person> personrepository,IEFGenericRepository<HistoryAddingDays>historyAddingDaysrepository,IEFGenericRepository<Weekend> wekendRepository,IEFGenericRepository<Vacation> vacationRepository)
+        public CountVacation CountVacation { get; set; }
+        public HomeController(UserManager<UserAuthentication> userManager, SignInManager<UserAuthentication> signInManager,IEFGenericRepository<Team> teamrepository, IEFGenericRepository<Person> personrepository,IEFGenericRepository<HistoryAddingDays>historyAddingDaysrepository,IEFGenericRepository<Weekend> wekendRepository,IEFGenericRepository<Vacation> vacationRepository,CountVacation countVacation)
         {
+            CountVacation = countVacation;
             _userManager = userManager;
             _signInManager = signInManager;
             Vacationrepository = vacationRepository;
@@ -265,13 +267,12 @@ namespace Workers.Controllers
         public void ChangeDateVacation([FromBody] CalendarEventy request)
         {
          
-            CountVacation countVacation = new CountVacation();
+          
             string start = request.start.Substring(0 , 10).Replace("-","/");
             string end = request.end.Substring(0, 10).Replace("-", "/");
             Vacation updatevacation = Vacationrepository.FindById((Guid)request.Id);
             updatevacation.FirstDate = DateTime.ParseExact(start, "yyyy/M/d", CultureInfo.InvariantCulture);
             updatevacation.SecontDate = DateTime.ParseExact(end, "yyyy/M/d", CultureInfo.InvariantCulture);
-           
             Vacationrepository.Update(updatevacation);
          
         }

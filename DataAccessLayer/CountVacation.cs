@@ -12,23 +12,19 @@ namespace DataAccessLayer
     public class CountVacation 
     {
       
-        public EFGenericRepository<Vacation> Vacationrepository;
-        public EFGenericRepository<Team> TeamRepository { get; set; }
+        public IEFGenericRepository<Vacation> Vacationrepository;
+        public IEFGenericRepository<Team> TeamRepository { get; set; }
 
-        public EFGenericRepository<Person> Personrepository { get; set; }
-        public EFGenericRepository<Weekend> Weekendrepository { get; set; }
+        public IEFGenericRepository<Person> Personrepository { get; set; }
+        public IEFGenericRepository<Weekend> Weekendrepository { get; set; }
 
-        public CountVacation()
+        public CountVacation(IEFGenericRepository<Team> teamrepository, IEFGenericRepository<Person> personrepository, IEFGenericRepository<HistoryAddingDays> historyAddingDaysrepository, IEFGenericRepository<Weekend> wekendRepository, IEFGenericRepository<Vacation> vacationRepository)
         {
-         var optionsBuilder = new DbContextOptionsBuilder<WorkerContext>();
-
-         var options = optionsBuilder
-                .UseSqlServer(@"Server=(localdb)\MsSqlLocalDb;Database=Workers;Trusted_Connection=True;")
-                .Options;
-            Vacationrepository = new EFGenericRepository<Vacation>(new WorkerContext(options));
-            TeamRepository = new EFGenericRepository<Team>(new WorkerContext(options));
-            Personrepository = new EFGenericRepository<Person>(new WorkerContext(options));
-            Weekendrepository = new EFGenericRepository<Weekend>(new WorkerContext(options));
+         
+            Vacationrepository = vacationRepository;
+            TeamRepository = teamrepository;
+            Personrepository = personrepository;
+            Weekendrepository = wekendRepository;
         }
         
         public int CountWeekend(DateTime StartDay, DateTime EndDay, string TeamName)

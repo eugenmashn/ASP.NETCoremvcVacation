@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Workers.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using DataAccessLayer;
 
 namespace Workers
 {
@@ -61,6 +62,7 @@ namespace Workers
               .AddEntityFrameworkStores<AuthenticationContext>();
             services.AddMvc();
             services.AddScoped(typeof(IEFGenericRepository<>), typeof(EFGenericRepository<>));
+            services.AddTransient<CountVacation>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
           
         }
