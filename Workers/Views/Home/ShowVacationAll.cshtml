@@ -217,7 +217,10 @@
            var listCheckItems = $("#list-Names :checkbox");
            var listCheckTeam = listCheckItems.filter((i, item) => {
                  return !item.value.indexOf('Team');
-            })
+           })
+           var listCheck= listCheckItems.filter((i, item) => {
+                 return item.value.indexOf('Team');
+           })
             console.log(listCheckTeam);
            listCheckTeam.on("change", function () {
            var totalItems = listCheckTeam.length;
@@ -245,8 +248,17 @@
                   })
                   return Cheack;
               })
-              console.log(listCheackItemFilter);
-              listCheackItemFilter.each(function (i,item) {
+                 
+              listCheckItems.each(function (i,item) {
+             
+                  console.log(listCheackItemFilter);
+                 
+              });
+              listCheck.each(function (i, item) {
+              
+                  $(item).removeAttr("checked");
+              });
+              listCheackItemFilter.each(function (i, item) {        
                 $(item).prop("checked", "checked");
               });
             masterCheck.prop("indeterminate", true);
