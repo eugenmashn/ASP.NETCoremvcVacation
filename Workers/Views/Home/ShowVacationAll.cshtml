@@ -218,7 +218,7 @@
            var listCheckTeam = listCheckItems.filter((i, item) => {
                  return !item.value.indexOf('Team');
             })
-          
+            console.log(listCheckTeam);
            listCheckTeam.on("change", function () {
            var totalItems = listCheckTeam.length;
           var checkedItems = listCheckTeam.filter(":checked").length;
@@ -231,7 +231,6 @@
           // Not all but only some are checked
           else if (checkedItems > 0 && checkedItems < totalItems) {
               let Teams = listCheckTeam.filter(":checked");
-              console.log(TeamsUnchecked);
               let listCheackItemFilter = listCheckItems.filter((i, item) => {
                   let Cheack = false;
                   $.each(Teams, function (value,team){
